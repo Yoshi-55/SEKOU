@@ -109,10 +109,9 @@
   </div>
 
   <!-- オプション -->
-  <% unless free_mode? %>
-    <div class="border-b pb-6">
-      <h2 class="text-xl font-bold mb-4">掲載オプション</h2>
-      <p class="text-sm text-gray-600 mb-4">オプションを選択すると掲載料が変わります</p>
+  <div class="border-b pb-6">
+    <h2 class="text-xl font-bold mb-4">掲載オプション</h2>
+    <p class="text-sm text-gray-600 mb-4">オプションを選択すると掲載料が変わります</p>
 
       <div class="space-y-3">
         <label class="flex items-start gap-3 p-4 border rounded-lg hover:bg-gray-50 cursor-pointer">
@@ -162,65 +161,57 @@
         <p class="text-gray-700">基本掲載料</p>
         <p class="font-medium">¥5,000</p>
       </div>
-      <% if job.featured %>
-        <div class="flex justify-between items-center mb-2">
-          <p class="text-gray-700">注目表示</p>
-          <p class="font-medium">¥3,000</p>
-        </div>
-      <% end %>
-      <% if job.urgent %>
-        <div class="flex justify-between items-center mb-2">
-          <p class="text-gray-700">急募タグ</p>
-          <p class="font-medium">¥2,000</p>
-        </div>
-      <% end %>
-      <% if job.extended_period %>
-        <div class="flex justify-between items-center mb-2">
-          <p class="text-gray-700">掲載期間延長</p>
-          <p class="font-medium">¥3,000</p>
-        </div>
-      <% end %>
+      <div id="price-breakdown"></div>
       <div class="border-t border-blue-200 mt-4 pt-4">
         <div class="flex justify-between items-center">
           <p class="text-xl font-bold">合計金額</p>
-          <p class="text-2xl font-bold text-blue-600" data-price-target="total">¥<%= number_with_delimiter(job.persisted? ? job.calculate_total_price : 5000) %></p>
+          <p class="text-2xl font-bold text-blue-600" data-price-target="total">¥5,000</p>
         </div>
       </div>
     </div>
-  <% end %>
+  </div>
 
   <!-- Actions -->
   <div class="flex gap-4">
-    <% if free_mode? %>
-      <%= f.submit "案件を公開する", class: "flex-1 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-bold cursor-pointer" %>
-    <% else %>
-      <%= f.submit "次へ（決済画面）", class: "flex-1 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-bold cursor-pointer" %>
-    <% end %>
+    <%= f.submit "次へ（決済画面）", class: "flex-1 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-bold cursor-pointer" %>
     <%= link_to "キャンセル", jobs_path, class: "px-8 py-3 rounded-lg font-medium text-gray-700 hover:bg-gray-100" %>
   </div>
 <% end %>
 
 <script>
-  // Simple price calculation without Stimulus for now
   document.addEventListener('DOMContentLoaded', function() {
     const featuredCheckbox = document.querySelector('input[name="job[featured]"]');
     const urgentCheckbox = document.querySelector('input[name="job[urgent]"]');
     const extendedCheckbox = document.querySelector('input[name="job[extended_period]"]');
     const totalElement = document.querySelector('[data-price-target="total"]');
+    const priceBreakdown = document.getElementById('price-breakdown');
 
     function updatePrice() {
       let total = 5000;
-      if (featuredCheckbox && featuredCheckbox.checked) total += 3000;
-      if (urgentCheckbox && urgentCheckbox.checked) total += 2000;
-      if (extendedCheckbox && extendedCheckbox.checked) total += 3000;
+      let breakdown = '';
 
-      if (totalElement) {
-        totalElement.textContent = '¥' + total.toLocaleString();
+      if (featuredCheckbox && featuredCheckbox.checked) {
+        total += 3000;
+        breakdown += '<div class="flex justify-between items-center mb-2"><p class="text-gray-700">注目表示</p><p class="font-medium">¥3,000</p></div>';
       }
+      if (urgentCheckbox && urgentCheckbox.checked) {
+        total += 2000;
+        breakdown += '<div class="flex justify-between items-center mb-2"><p class="text-gray-700">急募タグ</p><p class="font-medium">¥2,000</p></div>';
+      }
+      if (extendedCheckbox && extendedCheckbox.checked) {
+        total += 3000;
+        breakdown += '<div class="flex justify-between items-center mb-2"><p class="text-gray-700">掲載期間延長</p><p class="font-medium">¥3,000</p></div>';
+      }
+
+      priceBreakdown.innerHTML = breakdown;
+      totalElement.textContent = '¥' + total.toLocaleString();
     }
 
     if (featuredCheckbox) featuredCheckbox.addEventListener('change', updatePrice);
     if (urgentCheckbox) urgentCheckbox.addEventListener('change', updatePrice);
     if (extendedCheckbox) extendedCheckbox.addEventListener('change', updatePrice);
+
+    // 初期状態を設定
+    updatePrice();
   });
 </script>

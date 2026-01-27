@@ -44,14 +44,14 @@
         <%= f.telephone_field :phone, class: "w-full border border-gray-300 rounded px-4 py-2", placeholder: "090-1234-5678", required: true %>
       </div>
 
-      <!-- Company Name (for Client) -->
-      <div id="company-fields" style="display: none;">
+      <!-- Company Name (共通) -->
+      <div>
         <%= f.label :company_name, "会社名", class: "block text-sm font-medium text-gray-700 mb-1" %>
-        <%= f.text_field :company_name, class: "w-full border border-gray-300 rounded px-4 py-2", placeholder: "株式会社〇〇" %>
+        <%= f.text_field :company_name, class: "w-full border border-gray-300 rounded px-4 py-2", placeholder: "株式会社〇〇", required: true %>
       </div>
 
       <!-- Prefecture (for Craftsman) -->
-      <div id="craftsman-fields" style="display: none;">
+      <div id="craftsman-fields" style="display: <%= resource.type == 'Craftsman' ? 'block' : 'none' %>;">
         <%= f.label :prefecture, "都道府県", class: "block text-sm font-medium text-gray-700 mb-1" %>
         <%= f.select :prefecture,
           [
@@ -94,24 +94,18 @@
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  function setupUserTypeToggle() {
     const clientRadio = document.querySelector('input[value="Client"]');
     const craftsmanRadio = document.querySelector('input[value="Craftsman"]');
-    const companyFields = document.getElementById('company-fields');
     const craftsmanFields = document.getElementById('craftsman-fields');
-    const companyNameInput = document.querySelector('input[name="user[company_name]"]');
     const prefectureSelect = document.querySelector('select[name="user[prefecture]"]');
 
     function updateFields() {
-      if (clientRadio.checked) {
-        companyFields.style.display = 'block';
-        craftsmanFields.style.display = 'none';
-        if (companyNameInput) companyNameInput.required = true;
+      if (clientRadio && clientRadio.checked) {
+        if (craftsmanFields) craftsmanFields.style.display = 'none';
         if (prefectureSelect) prefectureSelect.required = false;
-      } else if (craftsmanRadio.checked) {
-        companyFields.style.display = 'none';
-        craftsmanFields.style.display = 'block';
-        if (companyNameInput) companyNameInput.required = false;
+      } else if (craftsmanRadio && craftsmanRadio.checked) {
+        if (craftsmanFields) craftsmanFields.style.display = 'block';
         if (prefectureSelect) prefectureSelect.required = true;
       }
     }
@@ -120,7 +114,10 @@
     if (craftsmanRadio) craftsmanRadio.addEventListener('change', updateFields);
 
     // Initialize on page load if a radio is already checked
-    if (clientRadio && clientRadio.checked) updateFields();
-    if (craftsmanRadio && craftsmanRadio.checked) updateFields();
-  });
+    updateFields();
+  }
+
+  // Support both regular page load and Turbo navigation
+  document.addEventListener('DOMContentLoaded', setupUserTypeToggle);
+  document.addEventListener('turbo:load', setupUserTypeToggle);
 </script>

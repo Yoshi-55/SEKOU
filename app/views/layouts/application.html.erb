@@ -35,7 +35,9 @@
 
           <div class="flex items-center space-x-4">
             <% if user_signed_in? %>
-              <span class="text-gray-700"><%= current_user.name %>さん</span>
+              <%= link_to profile_path, class: "text-gray-700 hover:text-blue-600" do %>
+                <%= current_user.name %>さん
+              <% end %>
               <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded" %>
             <% else %>
               <%= link_to "ログイン", new_user_session_path, class: "text-gray-700 hover:text-blue-600" %>

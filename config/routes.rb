@@ -3,6 +3,9 @@ Rails.application.routes.draw do
 
   root "pages#home"
 
+  # プロフィール
+  resource :profile, only: [:show, :edit, :update], controller: 'users'
+
   # 案件（Jobs）
   resources :jobs do
     resources :applies, only: [:new, :create]

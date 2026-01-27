@@ -1,8 +1,4 @@
 Rails.application.routes.draw do
-  get 'jobs/index'
-  get 'jobs/show'
-  get 'jobs/new'
-  get 'jobs/edit'
   devise_for :users
 
   root "pages#home"

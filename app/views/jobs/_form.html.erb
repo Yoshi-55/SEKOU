@@ -1,0 +1,220 @@
+<%= form_with(model: job, class: "space-y-6") do |f| %>
+  <% if job.errors.any? %>
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+      <p class="font-bold mb-2"><%= pluralize(job.errors.count, "個") %>のエラーがあります:</p>
+      <ul class="list-disc list-inside">
+        <% job.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <!-- 基本情報 -->
+  <div class="border-b pb-6">
+    <h2 class="text-xl font-bold mb-4">基本情報</h2>
+
+    <div class="space-y-4">
+      <div>
+        <%= f.label :title, "案件タイトル", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.text_field :title, class: "w-full border border-gray-300 rounded px-4 py-2", placeholder: "例: カーラッピング施工スタッフ募集" %>
+      </div>
+
+      <div>
+        <%= f.label :description, "案件詳細", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.text_area :description, rows: 8, class: "w-full border border-gray-300 rounded px-4 py-2", placeholder: "案件の詳細を記入してください..." %>
+        <p class="text-sm text-gray-500 mt-1">※作業内容、必要な技術、注意事項などを詳しく記入してください</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <%= f.label :job_type, "案件種別", class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <%= f.select :job_type,
+            [
+              ["カーラッピング", "car_wrapping"],
+              ["フリート施工", "fleet"],
+              ["PPF施工", "ppf"],
+              ["その他", "other"]
+            ],
+            { include_blank: "選択してください" },
+            class: "w-full border border-gray-300 rounded px-4 py-2" %>
+        </div>
+
+        <div>
+          <%= f.label :location, "地域", class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <%= f.select :location,
+            [
+              ["東京都", "東京都"],
+              ["神奈川県", "神奈川県"],
+              ["埼玉県", "埼玉県"],
+              ["千葉県", "千葉県"],
+              ["大阪府", "大阪府"],
+              ["愛知県", "愛知県"],
+              ["福岡県", "福岡県"],
+              ["その他", "その他"]
+            ],
+            { include_blank: "選択してください" },
+            class: "w-full border border-gray-300 rounded px-4 py-2" %>
+        </div>
+      </div>
+
+      <div>
+        <%= f.label :address, "詳細住所（任意）", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.text_field :address, class: "w-full border border-gray-300 rounded px-4 py-2", placeholder: "例: 渋谷区神南1-1-1" %>
+      </div>
+    </div>
+  </div>
+
+  <!-- 条件 -->
+  <div class="border-b pb-6">
+    <h2 class="text-xl font-bold mb-4">条件</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <%= f.label :budget, "予算（円）", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.number_field :budget, class: "w-full border border-gray-300 rounded px-4 py-2", placeholder: "100000", min: 0 %>
+      </div>
+
+      <div>
+        <%= f.label :scheduled_date, "作業予定日", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.date_field :scheduled_date, class: "w-full border border-gray-300 rounded px-4 py-2" %>
+      </div>
+
+      <div>
+        <%= f.label :required_people, "必要人数", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.number_field :required_people, class: "w-full border border-gray-300 rounded px-4 py-2", value: job.required_people || 1, min: 1 %>
+      </div>
+    </div>
+  </div>
+
+  <!-- 画像 -->
+  <div class="border-b pb-6">
+    <h2 class="text-xl font-bold mb-4">画像</h2>
+
+    <div>
+      <%= f.label :images, "画像をアップロード（最大5枚）", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.file_field :images, multiple: true, accept: "image/*", class: "w-full border border-gray-300 rounded px-4 py-2" %>
+      <p class="text-sm text-gray-500 mt-1">※JPG、PNG形式に対応しています</p>
+    </div>
+
+    <% if job.images.attached? %>
+      <div class="mt-4 grid grid-cols-3 gap-4">
+        <% job.images.each do |image| %>
+          <div class="relative">
+            <%= image_tag image, class: "w-full h-32 object-cover rounded" %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- オプション -->
+  <div class="border-b pb-6">
+    <h2 class="text-xl font-bold mb-4">掲載オプション</h2>
+    <p class="text-sm text-gray-600 mb-4">オプションを選択すると掲載料が変わります</p>
+
+    <div class="space-y-3">
+      <label class="flex items-start gap-3 p-4 border rounded-lg hover:bg-gray-50 cursor-pointer">
+        <%= f.check_box :featured, class: "mt-1", data: { action: "change->price#calculate" } %>
+        <div class="flex-1">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="font-medium">注目表示</p>
+              <p class="text-sm text-gray-600">案件一覧で目立つ位置に表示されます</p>
+            </div>
+            <p class="font-bold text-blue-600">+¥3,000</p>
+          </div>
+        </div>
+      </label>
+
+      <label class="flex items-start gap-3 p-4 border rounded-lg hover:bg-gray-50 cursor-pointer">
+        <%= f.check_box :urgent, class: "mt-1", data: { action: "change->price#calculate" } %>
+        <div class="flex-1">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="font-medium">急募タグ</p>
+              <p class="text-sm text-gray-600">急募バッジが表示され注目度がアップします</p>
+            </div>
+            <p class="font-bold text-blue-600">+¥2,000</p>
+          </div>
+        </div>
+      </label>
+
+      <label class="flex items-start gap-3 p-4 border rounded-lg hover:bg-gray-50 cursor-pointer">
+        <%= f.check_box :extended_period, class: "mt-1", data: { action: "change->price#calculate" } %>
+        <div class="flex-1">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="font-medium">掲載期間延長（60日間）</p>
+              <p class="text-sm text-gray-600">通常30日間の掲載期間を60日間に延長します</p>
+            </div>
+            <p class="font-bold text-blue-600">+¥3,000</p>
+          </div>
+        </div>
+      </label>
+    </div>
+  </div>
+
+  <!-- 料金表示 -->
+  <div class="bg-blue-50 rounded-lg p-6">
+    <div class="flex justify-between items-center mb-2">
+      <p class="text-gray-700">基本掲載料</p>
+      <p class="font-medium">¥5,000</p>
+    </div>
+    <% if job.featured %>
+      <div class="flex justify-between items-center mb-2">
+        <p class="text-gray-700">注目表示</p>
+        <p class="font-medium">¥3,000</p>
+      </div>
+    <% end %>
+    <% if job.urgent %>
+      <div class="flex justify-between items-center mb-2">
+        <p class="text-gray-700">急募タグ</p>
+        <p class="font-medium">¥2,000</p>
+      </div>
+    <% end %>
+    <% if job.extended_period %>
+      <div class="flex justify-between items-center mb-2">
+        <p class="text-gray-700">掲載期間延長</p>
+        <p class="font-medium">¥3,000</p>
+      </div>
+    <% end %>
+    <div class="border-t border-blue-200 mt-4 pt-4">
+      <div class="flex justify-between items-center">
+        <p class="text-xl font-bold">合計金額</p>
+        <p class="text-2xl font-bold text-blue-600" data-price-target="total">¥<%= number_with_delimiter(job.persisted? ? job.calculate_total_price : 5000) %></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="flex gap-4">
+    <%= f.submit "次へ（決済画面）", class: "flex-1 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-bold cursor-pointer" %>
+    <%= link_to "キャンセル", jobs_path, class: "px-8 py-3 rounded-lg font-medium text-gray-700 hover:bg-gray-100" %>
+  </div>
+<% end %>
+
+<script>
+  // Simple price calculation without Stimulus for now
+  document.addEventListener('DOMContentLoaded', function() {
+    const featuredCheckbox = document.querySelector('input[name="job[featured]"]');
+    const urgentCheckbox = document.querySelector('input[name="job[urgent]"]');
+    const extendedCheckbox = document.querySelector('input[name="job[extended_period]"]');
+    const totalElement = document.querySelector('[data-price-target="total"]');
+
+    function updatePrice() {
+      let total = 5000;
+      if (featuredCheckbox && featuredCheckbox.checked) total += 3000;
+      if (urgentCheckbox && urgentCheckbox.checked) total += 2000;
+      if (extendedCheckbox && extendedCheckbox.checked) total += 3000;
+
+      if (totalElement) {
+        totalElement.textContent = '¥' + total.toLocaleString();
+      }
+    }
+
+    if (featuredCheckbox) featuredCheckbox.addEventListener('change', updatePrice);
+    if (urgentCheckbox) urgentCheckbox.addEventListener('change', updatePrice);
+    if (extendedCheckbox) extendedCheckbox.addEventListener('change', updatePrice);
+  });
+</script>

@@ -1,4 +1,163 @@
-<div>
-  <h1 class="font-bold text-4xl">Jobs#show</h1>
-  <p>Find me in app/views/jobs/show.html.erb</p>
+<div class="max-w-4xl mx-auto">
+  <!-- Header with badges and actions -->
+  <div class="bg-white rounded-lg shadow p-6 mb-6">
+    <div class="flex justify-between items-start mb-4">
+      <div class="flex-1">
+        <div class="flex items-start gap-3 mb-2">
+          <h1 class="text-3xl font-bold text-gray-900"><%= @job.title %></h1>
+          <div class="flex gap-2">
+            <% if @job.featured %>
+              <span class="bg-yellow-400 text-yellow-900 text-xs px-3 py-1 rounded-full font-medium">注目</span>
+            <% end %>
+            <% if @job.urgent %>
+              <span class="bg-red-500 text-white text-xs px-3 py-1 rounded-full font-medium">急募</span>
+            <% end %>
+          </div>
+        </div>
+        <p class="text-gray-500 text-sm">
+          掲載日: <%= l(@job.published_at, format: :long) if @job.published_at %>
+          <% if @job.expires_at %>
+            | 掲載期限: <%= l(@job.expires_at, format: :long) %>
+          <% end %>
+        </p>
+      </div>
+
+      <!-- Action buttons for job owner -->
+      <% if user_signed_in? && current_user.is_a?(Client) && @job.client == current_user %>
+        <div class="flex gap-2">
+          <% if @job.draft? || @job.pending_payment? %>
+            <%= link_to "編集", edit_job_path(@job), class: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded font-medium" %>
+            <%= button_to "削除", job_path(@job), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded font-medium" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Key Information Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-gray-50 rounded-lg">
+      <div>
+        <p class="text-sm text-gray-600 mb-1">案件種別</p>
+        <p class="font-bold text-lg"><%= @job.job_type %></p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-600 mb-1">予算</p>
+        <p class="font-bold text-lg text-blue-600"><%= number_to_currency(@job.budget, unit: "¥", precision: 0) %></p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-600 mb-1">作業予定日</p>
+        <p class="font-bold text-lg"><%= l(@job.scheduled_date, format: :long) %></p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-600 mb-1">必要人数</p>
+        <p class="font-bold text-lg"><%= @job.required_people %>名</p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-600 mb-1">場所</p>
+        <p class="font-bold text-lg">📍 <%= @job.location %></p>
+      </div>
+      <% if @job.address.present? %>
+        <div>
+          <p class="text-sm text-gray-600 mb-1">詳細住所</p>
+          <p class="font-bold text-lg"><%= @job.address %></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Description -->
+  <div class="bg-white rounded-lg shadow p-6 mb-6">
+    <h2 class="text-xl font-bold mb-4">案件詳細</h2>
+    <div class="prose max-w-none">
+      <%= simple_format(@job.description) %>
+    </div>
+  </div>
+
+  <!-- Images -->
+  <% if @job.images.attached? %>
+    <div class="bg-white rounded-lg shadow p-6 mb-6">
+      <h2 class="text-xl font-bold mb-4">画像</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <% @job.images.each do |image| %>
+          <%= image_tag image, class: "w-full h-48 object-cover rounded-lg" %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Apply Section (for Craftsmen) -->
+  <% if user_signed_in? && current_user.is_a?(Craftsman) %>
+    <div class="bg-white rounded-lg shadow p-6 mb-6">
+      <h2 class="text-xl font-bold mb-4">この案件に応募する</h2>
+      <% if @job.applies.exists?(craftsman: current_user) %>
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+          <p class="font-medium">この案件には既に応募済みです</p>
+          <%= link_to "応募履歴を見る", applies_path, class: "text-green-800 underline mt-2 inline-block" %>
+        </div>
+      <% else %>
+        <%= link_to "応募する", new_job_apply_path(@job), class: "bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-bold inline-block" %>
+      <% end %>
+    </div>
+  <% elsif !user_signed_in? %>
+    <div class="bg-white rounded-lg shadow p-6 mb-6">
+      <h2 class="text-xl font-bold mb-4">この案件に応募するには</h2>
+      <p class="text-gray-600 mb-4">応募するにはログインまたは新規登録が必要です</p>
+      <div class="flex gap-4">
+        <%= link_to "ログイン", new_user_session_path, class: "bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium" %>
+        <%= link_to "新規登録", new_user_registration_path, class: "bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-3 rounded-lg font-medium" %>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Applications List (for Job Owner) -->
+  <% if user_signed_in? && current_user.is_a?(Client) && @job.client == current_user && @applies.present? %>
+    <div class="bg-white rounded-lg shadow p-6 mb-6">
+      <h2 class="text-xl font-bold mb-4">応募者一覧 (<%= @applies.count %>件)</h2>
+      <div class="space-y-4">
+        <% @applies.each do |apply| %>
+          <div class="border rounded-lg p-4 <%= 'bg-green-50' if apply.accepted? %>">
+            <div class="flex justify-between items-start mb-2">
+              <div>
+                <p class="font-bold text-lg"><%= apply.craftsman.name %></p>
+                <p class="text-sm text-gray-600">応募日: <%= l(apply.applied_at, format: :short) %></p>
+              </div>
+              <div>
+                <% if apply.pending? %>
+                  <span class="bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full font-medium">審査中</span>
+                <% elsif apply.accepted? %>
+                  <span class="bg-green-500 text-white text-xs px-3 py-1 rounded-full font-medium">承認済み</span>
+                <% elsif apply.rejected? %>
+                  <span class="bg-red-500 text-white text-xs px-3 py-1 rounded-full font-medium">不採用</span>
+                <% end %>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <p class="text-sm text-gray-600 mb-1">メッセージ</p>
+              <p class="text-gray-800"><%= apply.message %></p>
+            </div>
+
+            <% if apply.desired_budget.present? %>
+              <p class="text-sm text-gray-600">希望予算: <span class="font-bold"><%= number_to_currency(apply.desired_budget, unit: "¥", precision: 0) %></span></p>
+            <% end %>
+
+            <% if apply.available_date.present? %>
+              <p class="text-sm text-gray-600">対応可能日: <span class="font-bold"><%= l(apply.available_date, format: :long) %></span></p>
+            <% end %>
+
+            <% if apply.pending? %>
+              <div class="flex gap-2 mt-4">
+                <%= button_to "承認する", accept_apply_path(apply), method: :patch, class: "bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded font-medium" %>
+                <%= button_to "不採用", reject_apply_path(apply), method: :patch, data: { confirm: "本当に不採用としますか？" }, class: "bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded font-medium" %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Back to list -->
+  <div class="text-center">
+    <%= link_to "← 案件一覧に戻る", jobs_path, class: "text-blue-600 hover:underline" %>
+  </div>
 </div>

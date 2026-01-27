@@ -31,10 +31,12 @@ class Job < ApplicationRecord
 
   # Methods
   def publish!
+    now = Time.current
+    days = extended_period ? 60 : 30
     update!(
       status: :published,
-      published_at: Time.current,
-      expires_at: calculate_expiration_date
+      published_at: now,
+      expires_at: now + days.days
     )
   end
 
@@ -49,12 +51,5 @@ class Job < ApplicationRecord
     total += 2000 if urgent
     total += 3000 if extended_period
     total
-  end
-
-  private
-
-  def calculate_expiration_date
-    days = extended_period ? 60 : 30
-    published_at + days.days
   end
 end

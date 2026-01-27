@@ -25,15 +25,15 @@
     <div class="text-blue-600 text-4xl mb-4">🎯</div>
     <h3 class="text-xl font-bold mb-2">簡単な案件掲載</h3>
     <p class="text-gray-600">
-      必要事項を入力するだけで、すぐに案件を掲載できます。注目表示や急募タグなどのオプションも選択可能です。
+      必要事項を入力するだけで、すぐに案件を掲載できます。完全無料で利用可能です。
     </p>
   </div>
 
   <div class="bg-white rounded-lg shadow p-6">
     <div class="text-blue-600 text-4xl mb-4">💰</div>
-    <h3 class="text-xl font-bold mb-2">明確な料金体系</h3>
+    <h3 class="text-xl font-bold mb-2">完全無料</h3>
     <p class="text-gray-600">
-      基本掲載料5,000円〜。必要なオプションだけを選択できるシンプルな料金プランです。
+      案件の掲載は完全無料。登録料や月額費用も一切かかりません。
     </p>
   </div>
 
@@ -41,7 +41,7 @@
     <div class="text-blue-600 text-4xl mb-4">⚡</div>
     <h3 class="text-xl font-bold mb-2">スピーディーな対応</h3>
     <p class="text-gray-600">
-      決済完了後すぐに案件が公開されます。職人からの応募もリアルタイムで確認できます。
+      案件を作成すればすぐに公開されます。職人からの応募もリアルタイムで確認できます。
     </p>
   </div>
 </div>
@@ -53,19 +53,14 @@
     <div class="space-y-4">
       <% @recent_jobs.each do |job| %>
         <%= link_to job_path(job), class: "block border rounded-lg p-4 hover:shadow-md transition" do %>
-          <div class="flex justify-between items-start">
-            <div>
-              <h3 class="font-bold text-lg mb-1"><%= job.title %></h3>
-              <p class="text-gray-600 text-sm mb-2"><%= truncate(job.description, length: 100) %></p>
-              <div class="flex gap-4 text-sm text-gray-500">
-                <span>📍 <%= job.location %></span>
-                <span>💰 <%= number_to_currency(job.budget, unit: "¥", precision: 0) %></span>
-                <span>📅 <%= l(job.scheduled_date, format: :short) %></span>
-              </div>
+          <div>
+            <h3 class="font-bold text-lg mb-1"><%= job.title %></h3>
+            <p class="text-gray-600 text-sm mb-2"><%= truncate(job.description, length: 100) %></p>
+            <div class="flex gap-4 text-sm text-gray-500">
+              <span>📍 <%= job.location %></span>
+              <span>💰 <%= number_to_currency(job.budget, unit: "¥", precision: 0) %></span>
+              <span>📅 <%= l(job.scheduled_date, format: :short) %></span>
             </div>
-            <% if job.urgent %>
-              <span class="bg-red-500 text-white text-xs px-2 py-1 rounded">急募</span>
-            <% end %>
           </div>
         <% end %>
       <% end %>
@@ -78,27 +73,3 @@
   <% end %>
 </div>
 
-<!-- Pricing Section -->
-<div class="mt-12 bg-gray-100 rounded-lg p-8">
-  <h2 class="text-2xl font-bold mb-6 text-center">料金プラン</h2>
-  <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-    <div class="bg-white rounded-lg shadow p-6">
-      <h3 class="text-xl font-bold mb-4">基本掲載</h3>
-      <div class="text-3xl font-bold text-blue-600 mb-4">¥5,000<span class="text-lg text-gray-600">/案件</span></div>
-      <ul class="space-y-2 text-gray-600">
-        <li>✓ 30日間掲載</li>
-        <li>✓ 画像5枚まで</li>
-        <li>✓ 基本サポート</li>
-      </ul>
-    </div>
-
-    <div class="bg-white rounded-lg shadow p-6">
-      <h3 class="text-xl font-bold mb-4">オプション</h3>
-      <ul class="space-y-3 text-gray-600">
-        <li><span class="font-bold text-gray-800">注目表示</span> +¥3,000</li>
-        <li><span class="font-bold text-gray-800">急募タグ</span> +¥2,000</li>
-        <li><span class="font-bold text-gray-800">掲載期間延長（60日）</span> +¥3,000</li>
-      </ul>
-    </div>
-  </div>
-</div>

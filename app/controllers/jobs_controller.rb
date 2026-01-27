@@ -1,7 +1,7 @@
 class JobsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_job, only: [:show, :edit, :update, :destroy]
-  before_action :authorize_client!, only: [:new, :create, :edit, :update, :destroy]
+  before_action :authorize_job_owner!, only: [:edit, :update, :destroy]
 
   def index
     @jobs = Job.published_jobs.recent
@@ -28,7 +28,7 @@ class JobsController < ApplicationController
   end
 
   def show
-    @applies = @job.applies.includes(:craftsman) if user_signed_in? && current_user.is_a?(Client) && @job.client == current_user
+    @applies = @job.applies.includes(:craftsman) if user_signed_in? && @job.client == current_user
   end
 
   def new
@@ -95,9 +95,9 @@ class JobsController < ApplicationController
     )
   end
 
-  def authorize_client!
-    unless current_user.is_a?(Client)
-      redirect_to root_path, alert: '依頼主のみアクセスできます。'
+  def authorize_job_owner!
+    unless @job.client == current_user
+      redirect_to root_path, alert: 'アクセス権限がありません。'
     end
   end
 

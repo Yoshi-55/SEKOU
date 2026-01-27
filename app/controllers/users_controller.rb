@@ -3,11 +3,8 @@ class UsersController < ApplicationController
 
   def show
     @user = current_user
-    if @user.is_a?(Client)
-      @jobs = @user.jobs.order(created_at: :desc).limit(5)
-    elsif @user.is_a?(Craftsman)
-      @applies = @user.applies.includes(:job).order(created_at: :desc).limit(5)
-    end
+    @jobs = @user.jobs.order(created_at: :desc).limit(5)
+    @applies = @user.applies.includes(:job).order(created_at: :desc).limit(5)
   end
 
   def edit
@@ -26,14 +23,9 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    permitted_params = [:name, :phone, :company_name, :prefecture]
-
-    if current_user.is_a?(Craftsman)
-      permitted_params += [:skills, :bio, :years_of_experience]
-    elsif current_user.is_a?(Client)
-      permitted_params += [:company_address]
-    end
-
-    params.require(:user).permit(permitted_params)
+    params.require(:user).permit(
+      :name, :phone, :company_name, :prefecture,
+      :company_address, :skills, :bio, :years_of_experience
+    )
   end
 end

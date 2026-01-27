@@ -22,13 +22,9 @@
 
             <% if user_signed_in? %>
               <div class="flex space-x-4">
-                <% if current_user.is_a?(Client) %>
-                  <%= link_to "案件一覧", jobs_path, class: "text-gray-700 hover:text-blue-600" %>
-                  <%= link_to "案件作成", new_job_path, class: "text-gray-700 hover:text-blue-600" %>
-                <% elsif current_user.is_a?(Craftsman) %>
-                  <%= link_to "案件を探す", jobs_path, class: "text-gray-700 hover:text-blue-600" %>
-                  <%= link_to "応募履歴", applies_path, class: "text-gray-700 hover:text-blue-600" %>
-                <% end %>
+                <%= link_to "案件を探す", jobs_path, class: "text-gray-700 hover:text-blue-600" %>
+                <%= link_to "案件作成", new_job_path, class: "text-gray-700 hover:text-blue-600" %>
+                <%= link_to "応募履歴", applies_path, class: "text-gray-700 hover:text-blue-600" %>
               </div>
             <% end %>
           </div>

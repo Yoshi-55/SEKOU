@@ -5,27 +5,6 @@
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "space-y-4" }) do |f| %>
       <%= render "devise/shared/error_messages", resource: resource %>
 
-      <!-- User Type Selection -->
-      <div>
-        <%= f.label :type, "登録タイプ", class: "block text-sm font-medium text-gray-700 mb-2" %>
-        <div class="space-y-2">
-          <label class="flex items-center p-4 border rounded-lg hover:bg-gray-50 cursor-pointer">
-            <%= f.radio_button :type, "Client", class: "mr-3", required: true %>
-            <div>
-              <p class="font-medium">企業（依頼主）</p>
-              <p class="text-sm text-gray-600">施工案件を掲載したい企業様</p>
-            </div>
-          </label>
-          <label class="flex items-center p-4 border rounded-lg hover:bg-gray-50 cursor-pointer">
-            <%= f.radio_button :type, "Craftsman", class: "mr-3", required: true %>
-            <div>
-              <p class="font-medium">職人</p>
-              <p class="text-sm text-gray-600">施工案件を探している職人様</p>
-            </div>
-          </label>
-        </div>
-      </div>
-
       <!-- Name -->
       <div>
         <%= f.label :name, "お名前", class: "block text-sm font-medium text-gray-700 mb-1" %>

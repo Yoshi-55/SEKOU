@@ -4,11 +4,7 @@ class AppliesController < ApplicationController
   before_action :set_job, only: [:new, :create]
 
   def index
-    if current_user.is_a?(Craftsman)
-      @applies = current_user.applies.includes(:job).recent
-    else
-      redirect_to root_path, alert: '職人のみアクセスできます。'
-    end
+    @applies = current_user.applies.includes(:job).recent
   end
 
   def show
@@ -18,34 +14,26 @@ class AppliesController < ApplicationController
   end
 
   def new
-    if current_user.is_a?(Craftsman)
-      if @job.applies.exists?(craftsman: current_user)
-        redirect_to @job, alert: 'この案件には既に応募済みです。'
-      else
-        @apply = @job.applies.build
-      end
+    if @job.applies.exists?(craftsman: current_user)
+      redirect_to @job, alert: 'この案件には既に応募済みです。'
     else
-      redirect_to root_path, alert: '職人のみ応募できます。'
+      @apply = @job.applies.build
     end
   end
 
   def create
-    if current_user.is_a?(Craftsman)
-      @apply = @job.applies.build(apply_params)
-      @apply.craftsman = current_user
+    @apply = @job.applies.build(apply_params)
+    @apply.craftsman = current_user
 
-      if @apply.save
-        redirect_to applies_path, notice: '応募が完了しました。'
-      else
-        render :new, status: :unprocessable_entity
-      end
+    if @apply.save
+      redirect_to applies_path, notice: '応募が完了しました。'
     else
-      redirect_to root_path, alert: '職人のみ応募できます。'
+      render :new, status: :unprocessable_entity
     end
   end
 
   def accept
-    if current_user.is_a?(Client) && @apply.job.client == current_user
+    if @apply.job.client == current_user
       @apply.accept!
       redirect_to job_path(@apply.job), notice: '応募を承認しました。'
     else
@@ -54,7 +42,7 @@ class AppliesController < ApplicationController
   end
 
   def reject
-    if current_user.is_a?(Client) && @apply.job.client == current_user
+    if @apply.job.client == current_user
       @apply.reject!
       redirect_to job_path(@apply.job), notice: '応募を不採用にしました。'
     else
@@ -63,7 +51,7 @@ class AppliesController < ApplicationController
   end
 
   def cancel
-    if current_user.is_a?(Craftsman) && @apply.craftsman == current_user
+    if @apply.craftsman == current_user
       if @apply.cancel!
         redirect_to applies_path, notice: '応募をキャンセルしました。'
       else
@@ -89,7 +77,6 @@ class AppliesController < ApplicationController
   end
 
   def can_view_apply?
-    (current_user.is_a?(Craftsman) && @apply.craftsman == current_user) ||
-    (current_user.is_a?(Client) && @apply.job.client == current_user)
+    @apply.craftsman == current_user || @apply.job.client == current_user
   end
 end

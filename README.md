@@ -196,7 +196,7 @@ cancelled（職人が取り消し）
 - extended_period (boolean, default: false) # 掲載期間延長
 
 # ステータス管理
-- status (integer) # draft, pending_payment, published, closed
+- status (integer) # pending_payment, published, closed
 - published_at (datetime) # 公開日時
 - expires_at (datetime) # 掲載期限
 

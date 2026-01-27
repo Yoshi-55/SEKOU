@@ -8,10 +8,9 @@ class Job < ApplicationRecord
 
   # Enums
   enum status: {
-    draft: 0,
-    pending_payment: 1,
-    published: 2,
-    closed: 3
+    pending_payment: 0,
+    published: 1,
+    closed: 2
   }
 
   # Validations

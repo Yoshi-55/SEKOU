@@ -37,7 +37,7 @@ class JobsController < ApplicationController
 
   def create
     @job = current_user.jobs.build(job_params)
-    @job.status = :draft
+    @job.status = :pending_payment
 
     if @job.save
       # 決済画面へ
@@ -48,13 +48,13 @@ class JobsController < ApplicationController
   end
 
   def edit
-    unless @job.draft? || @job.pending_payment?
+    unless @job.pending_payment?
       redirect_to @job, alert: '公開済みの案件は編集できません。'
     end
   end
 
   def update
-    if @job.draft? || @job.pending_payment?
+    if @job.pending_payment?
       if @job.update(job_params)
         redirect_to @job, notice: '案件を更新しました。'
       else
@@ -66,7 +66,7 @@ class JobsController < ApplicationController
   end
 
   def destroy
-    if @job.draft? || @job.pending_payment?
+    if @job.pending_payment?
       @job.destroy
       redirect_to root_path, notice: '案件を削除しました。'
     else

@@ -25,7 +25,7 @@
       <!-- Action buttons for job owner -->
       <% if user_signed_in? && @job.client == current_user %>
         <div class="flex gap-2">
-          <% if @job.draft? || @job.pending_payment? %>
+          <% if @job.pending_payment? %>
             <%= link_to "編集", edit_job_path(@job), class: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded font-medium" %>
             <%= button_to "削除", job_path(@job), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded font-medium" %>
           <% end %>

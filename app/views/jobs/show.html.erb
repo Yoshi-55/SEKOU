@@ -60,18 +60,6 @@
     </div>
   </div>
 
-  <!-- Images -->
-  <% if @job.images.attached? %>
-    <div class="bg-white rounded-lg shadow p-6 mb-6">
-      <h2 class="text-xl font-bold mb-4">画像</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <% @job.images.each do |image| %>
-          <%= image_tag image, class: "w-full h-48 object-cover rounded-lg" %>
-        <% end %>
-      </div>
-    </div>
-  <% end %>
-
   <!-- Apply Section -->
   <% if user_signed_in? && @job.client != current_user %>
     <div class="bg-white rounded-lg shadow p-6 mb-6">

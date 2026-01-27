@@ -4,7 +4,6 @@ class Job < ApplicationRecord
   has_many :applies, dependent: :destroy
   has_many :craftsmen, through: :applies, source: :craftsman
   has_many :payments, dependent: :destroy
-  has_many_attached :images
 
   # Enums
   enum status: {

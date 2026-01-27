@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_01_27_160039) do
+ActiveRecord::Schema[7.1].define(version: 2026_01_27_161030) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -68,9 +68,6 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_27_160039) do
     t.integer "budget", null: false
     t.date "scheduled_date", null: false
     t.integer "required_people", default: 1, null: false
-    t.boolean "featured", default: false, null: false
-    t.boolean "urgent", default: false, null: false
-    t.boolean "extended_period", default: false, null: false
     t.integer "status", default: 0, null: false
     t.datetime "published_at"
     t.datetime "expires_at"

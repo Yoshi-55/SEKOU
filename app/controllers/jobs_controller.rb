@@ -37,40 +37,40 @@ class JobsController < ApplicationController
 
   def create
     @job = current_user.jobs.build(job_params)
-    @job.status = :pending_payment
+    @job.status = :published
+    @job.published_at = Time.current
+    @job.expires_at = Time.current + 30.days
 
     if @job.save
-      # 決済画面へ
-      redirect_to new_payment_path(job_id: @job.id), notice: '案件を作成しました。決済に進んでください。'
+      redirect_to @job, notice: '案件を掲載しました。'
+
     else
       render :new, status: :unprocessable_entity
     end
   end
 
   def edit
-    unless @job.pending_payment?
-      redirect_to @job, alert: '公開済みの案件は編集できません。'
+    if @job.applies.accepted.exists?
+      redirect_to @job, alert: '承認済みの応募がある案件は編集できません。'
     end
   end
 
   def update
-    if @job.pending_payment?
-      if @job.update(job_params)
-        redirect_to @job, notice: '案件を更新しました。'
-      else
-        render :edit, status: :unprocessable_entity
-      end
+    if @job.applies.accepted.exists?
+      redirect_to @job, alert: '承認済みの応募がある案件は編集できません。'
+    elsif @job.update(job_params)
+      redirect_to @job, notice: '案件を更新しました。'
     else
-      redirect_to @job, alert: '公開済みの案件は編集できません。'
+      render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
-    if @job.pending_payment?
+    if @job.applies.accepted.exists?
+      redirect_to @job, alert: '承認済みの応募がある案件は削除できません。'
+    else
       @job.destroy
       redirect_to root_path, notice: '案件を削除しました。'
-    else
-      redirect_to @job, alert: '公開済みの案件は削除できません。'
     end
   end
 
@@ -84,7 +84,6 @@ class JobsController < ApplicationController
     params.require(:job).permit(
       :title, :description, :job_type, :location, :address,
       :budget, :scheduled_date, :required_people,
-      :featured, :urgent, :extended_period,
       images: []
     )
   end

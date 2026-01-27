@@ -25,32 +25,20 @@ class Job < ApplicationRecord
 
   # Scopes
   scope :published_jobs, -> { where(status: :published).where('expires_at > ?', Time.current) }
-  scope :featured_jobs, -> { where(featured: true) }
-  scope :urgent_jobs, -> { where(urgent: true) }
   scope :recent, -> { order(created_at: :desc) }
 
   # Methods
   def publish!
     now = Time.current
-    days = extended_period ? 60 : 30
     update!(
       status: :published,
       published_at: now,
-      expires_at: now + days.days
+      expires_at: now + 30.days
     )
   end
 
   def close!
     update!(status: :closed)
-  end
-
-  def calculate_total_price
-    base_price = 5000
-    total = base_price
-    total += 3000 if featured
-    total += 2000 if urgent
-    total += 3000 if extended_period
-    total
   end
 
   private

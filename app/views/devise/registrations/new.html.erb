@@ -50,8 +50,8 @@
         <%= f.text_field :company_name, class: "w-full border border-gray-300 rounded px-4 py-2", placeholder: "株式会社〇〇", required: true %>
       </div>
 
-      <!-- Prefecture (for Craftsman) -->
-      <div id="craftsman-fields" style="display: <%= resource.type == 'Craftsman' ? 'block' : 'none' %>;">
+      <!-- Prefecture (共通) -->
+      <div>
         <%= f.label :prefecture, "都道府県", class: "block text-sm font-medium text-gray-700 mb-1" %>
         <%= f.select :prefecture,
           [
@@ -65,7 +65,8 @@
             ["その他", "その他"]
           ],
           { include_blank: "選択してください" },
-          class: "w-full border border-gray-300 rounded px-4 py-2" %>
+          class: "w-full border border-gray-300 rounded px-4 py-2",
+          required: true %>
       </div>
 
       <!-- Password -->
@@ -92,32 +93,3 @@
     <%= render "devise/shared/links" %>
   </div>
 </div>
-
-<script>
-  function setupUserTypeToggle() {
-    const clientRadio = document.querySelector('input[value="Client"]');
-    const craftsmanRadio = document.querySelector('input[value="Craftsman"]');
-    const craftsmanFields = document.getElementById('craftsman-fields');
-    const prefectureSelect = document.querySelector('select[name="user[prefecture]"]');
-
-    function updateFields() {
-      if (clientRadio && clientRadio.checked) {
-        if (craftsmanFields) craftsmanFields.style.display = 'none';
-        if (prefectureSelect) prefectureSelect.required = false;
-      } else if (craftsmanRadio && craftsmanRadio.checked) {
-        if (craftsmanFields) craftsmanFields.style.display = 'block';
-        if (prefectureSelect) prefectureSelect.required = true;
-      }
-    }
-
-    if (clientRadio) clientRadio.addEventListener('change', updateFields);
-    if (craftsmanRadio) craftsmanRadio.addEventListener('change', updateFields);
-
-    // Initialize on page load if a radio is already checked
-    updateFields();
-  }
-
-  // Support both regular page load and Turbo navigation
-  document.addEventListener('DOMContentLoaded', setupUserTypeToggle);
-  document.addEventListener('turbo:load', setupUserTypeToggle);
-</script>

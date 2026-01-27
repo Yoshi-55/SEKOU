@@ -52,7 +52,7 @@
   <% if @recent_jobs.present? %>
     <div class="space-y-4">
       <% @recent_jobs.each do |job| %>
-        <div class="border rounded-lg p-4 hover:shadow-md transition">
+        <%= link_to job_path(job), class: "block border rounded-lg p-4 hover:shadow-md transition" do %>
           <div class="flex justify-between items-start">
             <div>
               <h3 class="font-bold text-lg mb-1"><%= job.title %></h3>
@@ -67,7 +67,7 @@
               <span class="bg-red-500 text-white text-xs px-2 py-1 rounded">急募</span>
             <% end %>
           </div>
-        </div>
+        <% end %>
       <% end %>
     </div>
     <div class="text-center mt-6">

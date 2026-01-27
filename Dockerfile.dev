@@ -1,0 +1,17 @@
+FROM ruby:3.2.10
+
+# 必要なパッケージをインストール
+RUN apt-get update -qq && \
+    apt-get install -y build-essential libpq-dev nodejs npm libvips libyaml-dev && \
+    npm install -g yarn && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# 作業ディレクトリを設定
+WORKDIR /app
+
+# アプリケーションのポートを公開
+EXPOSE 3000
+
+# Railsサーバーを起動
+CMD ["bash", "-lc", "rm -f tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0 -p 3000"]

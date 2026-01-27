@@ -9,7 +9,11 @@
       カーラッピング・フリートなどの施工案件を簡単に掲載・応募できます
     </p>
     <div class="flex gap-4">
-      <%= link_to "案件を掲載する（企業向け）", new_user_registration_path, class: "bg-white text-blue-600 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition" %>
+      <% if user_signed_in? && current_user.is_a?(Client) %>
+        <%= link_to "案件を掲載する（企業向け）", new_job_path, class: "bg-white text-blue-600 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition" %>
+      <% else %>
+        <%= link_to "案件を掲載する（企業向け）", new_user_registration_path, class: "bg-white text-blue-600 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition" %>
+      <% end %>
       <%= link_to "案件を探す（職人向け）", jobs_path, class: "border-2 border-white text-white px-8 py-3 rounded-lg font-bold hover:bg-white hover:text-blue-600 transition" %>
     </div>
   </div>

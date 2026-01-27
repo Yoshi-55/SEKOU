@@ -1,0 +1,126 @@
+<div class="max-w-md mx-auto">
+  <div class="bg-white rounded-lg shadow p-8">
+    <h2 class="text-2xl font-bold mb-6 text-center">新規登録</h2>
+
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "space-y-4" }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+
+      <!-- User Type Selection -->
+      <div>
+        <%= f.label :type, "登録タイプ", class: "block text-sm font-medium text-gray-700 mb-2" %>
+        <div class="space-y-2">
+          <label class="flex items-center p-4 border rounded-lg hover:bg-gray-50 cursor-pointer">
+            <%= f.radio_button :type, "Client", class: "mr-3", required: true %>
+            <div>
+              <p class="font-medium">企業（依頼主）</p>
+              <p class="text-sm text-gray-600">施工案件を掲載したい企業様</p>
+            </div>
+          </label>
+          <label class="flex items-center p-4 border rounded-lg hover:bg-gray-50 cursor-pointer">
+            <%= f.radio_button :type, "Craftsman", class: "mr-3", required: true %>
+            <div>
+              <p class="font-medium">職人</p>
+              <p class="text-sm text-gray-600">施工案件を探している職人様</p>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Name -->
+      <div>
+        <%= f.label :name, "お名前", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.text_field :name, autofocus: true, class: "w-full border border-gray-300 rounded px-4 py-2", placeholder: "山田 太郎", required: true %>
+      </div>
+
+      <!-- Email -->
+      <div>
+        <%= f.label :email, "メールアドレス", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.email_field :email, autocomplete: "email", class: "w-full border border-gray-300 rounded px-4 py-2", placeholder: "example@example.com", required: true %>
+      </div>
+
+      <!-- Phone -->
+      <div>
+        <%= f.label :phone, "電話番号", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.telephone_field :phone, class: "w-full border border-gray-300 rounded px-4 py-2", placeholder: "090-1234-5678", required: true %>
+      </div>
+
+      <!-- Company Name (for Client) -->
+      <div id="company-fields" style="display: none;">
+        <%= f.label :company_name, "会社名", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.text_field :company_name, class: "w-full border border-gray-300 rounded px-4 py-2", placeholder: "株式会社〇〇" %>
+      </div>
+
+      <!-- Prefecture (for Craftsman) -->
+      <div id="craftsman-fields" style="display: none;">
+        <%= f.label :prefecture, "都道府県", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.select :prefecture,
+          [
+            ["東京都", "東京都"],
+            ["神奈川県", "神奈川県"],
+            ["埼玉県", "埼玉県"],
+            ["千葉県", "千葉県"],
+            ["大阪府", "大阪府"],
+            ["愛知県", "愛知県"],
+            ["福岡県", "福岡県"],
+            ["その他", "その他"]
+          ],
+          { include_blank: "選択してください" },
+          class: "w-full border border-gray-300 rounded px-4 py-2" %>
+      </div>
+
+      <!-- Password -->
+      <div>
+        <%= f.label :password, "パスワード", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <% if @minimum_password_length %>
+          <p class="text-sm text-gray-500 mb-1">（<%= @minimum_password_length %>文字以上）</p>
+        <% end %>
+        <%= f.password_field :password, autocomplete: "new-password", class: "w-full border border-gray-300 rounded px-4 py-2", required: true %>
+      </div>
+
+      <!-- Password Confirmation -->
+      <div>
+        <%= f.label :password_confirmation, "パスワード（確認）", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "w-full border border-gray-300 rounded px-4 py-2", required: true %>
+      </div>
+
+      <!-- Submit -->
+      <div>
+        <%= f.submit "登録する", class: "w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-bold cursor-pointer" %>
+      </div>
+    <% end %>
+
+    <%= render "devise/shared/links" %>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const clientRadio = document.querySelector('input[value="Client"]');
+    const craftsmanRadio = document.querySelector('input[value="Craftsman"]');
+    const companyFields = document.getElementById('company-fields');
+    const craftsmanFields = document.getElementById('craftsman-fields');
+    const companyNameInput = document.querySelector('input[name="user[company_name]"]');
+    const prefectureSelect = document.querySelector('select[name="user[prefecture]"]');
+
+    function updateFields() {
+      if (clientRadio.checked) {
+        companyFields.style.display = 'block';
+        craftsmanFields.style.display = 'none';
+        if (companyNameInput) companyNameInput.required = true;
+        if (prefectureSelect) prefectureSelect.required = false;
+      } else if (craftsmanRadio.checked) {
+        companyFields.style.display = 'none';
+        craftsmanFields.style.display = 'block';
+        if (companyNameInput) companyNameInput.required = false;
+        if (prefectureSelect) prefectureSelect.required = true;
+      }
+    }
+
+    if (clientRadio) clientRadio.addEventListener('change', updateFields);
+    if (craftsmanRadio) craftsmanRadio.addEventListener('change', updateFields);
+
+    // Initialize on page load if a radio is already checked
+    if (clientRadio && clientRadio.checked) updateFields();
+    if (craftsmanRadio && craftsmanRadio.checked) updateFields();
+  });
+</script>

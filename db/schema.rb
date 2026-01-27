@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_01_27_082806) do
+ActiveRecord::Schema[7.1].define(version: 2026_01_27_101100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -96,6 +96,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_27_082806) do
     t.bigint "job_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "stripe_session_id"
     t.index ["job_id"], name: "index_payments_on_job_id"
     t.index ["status"], name: "index_payments_on_status"
     t.index ["stripe_charge_id"], name: "index_payments_on_stripe_charge_id", unique: true

@@ -1,0 +1,96 @@
+<div class="max-w-3xl mx-auto">
+  <h1 class="text-3xl font-bold mb-6">決済手続き</h1>
+
+  <!-- Job Summary -->
+  <div class="bg-white rounded-lg shadow p-6 mb-6">
+    <h2 class="text-xl font-bold mb-4">掲載する案件</h2>
+    <div class="space-y-2">
+      <p class="text-lg font-bold"><%= @job.title %></p>
+      <div class="flex gap-4 text-sm text-gray-600">
+        <span>📍 <%= @job.location %></span>
+        <span>💰 <%= number_to_currency(@job.budget, unit: "¥", precision: 0) %></span>
+        <span>📅 <%= l(@job.scheduled_date, format: :long) %></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payment Details -->
+  <div class="bg-white rounded-lg shadow p-6 mb-6">
+    <h2 class="text-xl font-bold mb-4">お支払い内容</h2>
+
+    <%= form_with(url: payments_path, method: :post, local: true) do |f| %>
+      <%= hidden_field_tag :job_id, @job.id %>
+      <%= f.hidden_field :base_price, value: @payment.base_price %>
+      <%= f.hidden_field :featured_price, value: @payment.featured_price %>
+      <%= f.hidden_field :urgent_price, value: @payment.urgent_price %>
+      <%= f.hidden_field :extended_price, value: @payment.extended_price %>
+
+      <div class="space-y-3 mb-6">
+        <!-- Base Price -->
+        <div class="flex justify-between items-center p-4 bg-gray-50 rounded">
+          <div>
+            <p class="font-medium">基本掲載料</p>
+            <p class="text-sm text-gray-600">30日間の掲載</p>
+          </div>
+          <p class="font-bold text-lg"><%= number_to_currency(5000, unit: "¥", precision: 0) %></p>
+        </div>
+
+        <!-- Featured -->
+        <% if @job.featured? %>
+          <div class="flex justify-between items-center p-4 bg-yellow-50 rounded border border-yellow-200">
+            <div>
+              <p class="font-medium">注目表示オプション</p>
+              <p class="text-sm text-gray-600">案件一覧で目立つ位置に表示</p>
+            </div>
+            <p class="font-bold text-lg"><%= number_to_currency(3000, unit: "¥", precision: 0) %></p>
+          </div>
+        <% end %>
+
+        <!-- Urgent -->
+        <% if @job.urgent? %>
+          <div class="flex justify-between items-center p-4 bg-red-50 rounded border border-red-200">
+            <div>
+              <p class="font-medium">急募タグオプション</p>
+              <p class="text-sm text-gray-600">急募バッジの表示</p>
+            </div>
+            <p class="font-bold text-lg"><%= number_to_currency(2000, unit: "¥", precision: 0) %></p>
+          </div>
+        <% end %>
+
+        <!-- Extended Period -->
+        <% if @job.extended_period? %>
+          <div class="flex justify-between items-center p-4 bg-green-50 rounded border border-green-200">
+            <div>
+              <p class="font-medium">掲載期間延長オプション</p>
+              <p class="text-sm text-gray-600">掲載期間を60日間に延長</p>
+            </div>
+            <p class="font-bold text-lg"><%= number_to_currency(3000, unit: "¥", precision: 0) %></p>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- Total -->
+      <div class="border-t-2 border-gray-300 pt-4 mb-6">
+        <div class="flex justify-between items-center">
+          <p class="text-2xl font-bold">合計金額</p>
+          <p class="text-3xl font-bold text-blue-600"><%= number_to_currency(@job.calculate_total_price, unit: "¥", precision: 0) %></p>
+        </div>
+      </div>
+
+      <!-- Notice -->
+      <div class="bg-blue-50 border border-blue-200 rounded p-4 mb-6">
+        <p class="text-sm text-gray-700">
+          ※決済はStripeを利用して安全に処理されます<br>
+          ※決済完了後、案件が自動的に公開されます<br>
+          ※クレジットカード情報は当サイトには保存されません
+        </p>
+      </div>
+
+      <!-- Submit -->
+      <div class="flex gap-4">
+        <%= f.submit "Stripe決済ページへ", class: "flex-1 bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-bold cursor-pointer text-lg" %>
+        <%= link_to "戻る", edit_job_path(@job), class: "px-8 py-4 rounded-lg font-medium text-gray-700 hover:bg-gray-100 border border-gray-300" %>
+      </div>
+    <% end %>
+  </div>
+</div>

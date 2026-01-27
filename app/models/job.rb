@@ -19,6 +19,7 @@ class Job < ApplicationRecord
   validates :job_type, presence: true
   validates :location, presence: true
   validates :budget, presence: true, numericality: { greater_than: 0 }
+  validate :budget_must_be_multiple_of_5000
   validates :scheduled_date, presence: true
   validates :required_people, presence: true, numericality: { greater_than: 0 }
 
@@ -50,5 +51,13 @@ class Job < ApplicationRecord
     total += 2000 if urgent
     total += 3000 if extended_period
     total
+  end
+
+  private
+
+  def budget_must_be_multiple_of_5000
+    if budget.present? && budget % 5000 != 0
+      errors.add(:budget, 'は5000円単位で入力してください')
+    end
   end
 end

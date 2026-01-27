@@ -31,6 +31,10 @@ class JobsController < ApplicationController
     @applies = @job.applies.includes(:craftsman) if user_signed_in? && @job.client == current_user
   end
 
+  def posted
+    @jobs = current_user.jobs.includes(:applies).recent.page(params[:page]).per(20)
+  end
+
   def new
     @job = current_user.jobs.build
   end

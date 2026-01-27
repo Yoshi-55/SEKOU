@@ -1,0 +1,86 @@
+<div class="mb-6">
+  <h1 class="text-3xl font-bold mb-2">募集履歴</h1>
+  <p class="text-gray-600">あなたが掲載した案件の一覧です</p>
+</div>
+
+<% if @jobs.present? %>
+  <div class="space-y-4">
+    <% @jobs.each do |job| %>
+      <div class="bg-white rounded-lg shadow p-6">
+        <div class="flex justify-between items-start mb-4">
+          <div class="flex-1">
+            <div class="flex items-center gap-3 mb-2">
+              <%= link_to job.title, job_path(job), class: "text-xl font-bold text-blue-600 hover:underline" %>
+              <div>
+                <% if job.published? %>
+                  <span class="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full font-medium">公開中</span>
+                <% elsif job.closed? %>
+                  <span class="bg-gray-500 text-white text-xs px-3 py-1 rounded-full font-medium">終了</span>
+                <% end %>
+              </div>
+            </div>
+            <p class="text-sm text-gray-500 mb-3">
+              掲載日: <%= l(job.published_at, format: :long) if job.published_at %>
+              <% if job.expires_at %>
+                | 掲載期限: <%= l(job.expires_at, format: :long) %>
+              <% end %>
+            </p>
+          </div>
+        </div>
+
+        <!-- Job Details -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4 p-4 bg-gray-50 rounded">
+          <div>
+            <p class="text-xs text-gray-600 mb-1">案件種別</p>
+            <p class="font-medium"><%= job.job_type %></p>
+          </div>
+          <div>
+            <p class="text-xs text-gray-600 mb-1">場所</p>
+            <p class="font-medium">📍 <%= job.location %></p>
+          </div>
+          <div>
+            <p class="text-xs text-gray-600 mb-1">日当</p>
+            <p class="font-medium text-blue-600"><%= number_to_currency(job.budget, unit: "¥", precision: 0) %></p>
+          </div>
+          <div>
+            <p class="text-xs text-gray-600 mb-1">作業予定日</p>
+            <p class="font-medium"><%= l(job.scheduled_date, format: :short) %></p>
+          </div>
+        </div>
+
+        <!-- Application Stats -->
+        <div class="mb-4 p-4 bg-blue-50 rounded">
+          <div class="flex gap-6 text-sm">
+            <div>
+              <span class="text-gray-600">応募数: </span>
+              <span class="font-bold text-blue-600"><%= job.applies.count %>件</span>
+            </div>
+            <div>
+              <span class="text-gray-600">承認済み: </span>
+              <span class="font-bold text-green-600"><%= job.applies.accepted.count %>件</span>
+            </div>
+            <div>
+              <span class="text-gray-600">審査中: </span>
+              <span class="font-bold text-yellow-600"><%= job.applies.pending.count %>件</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex gap-2">
+          <%= link_to "詳細を見る", job_path(job), class: "text-blue-600 hover:underline text-sm" %>
+          <% if job.published? && !job.applies.accepted.exists? %>
+            <%= link_to "編集", edit_job_path(job), class: "text-blue-600 hover:underline text-sm" %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <%= paginate @jobs %>
+<% else %>
+  <div class="bg-white rounded-lg shadow p-12 text-center">
+    <p class="text-gray-500 text-lg mb-4">まだ案件を掲載していません</p>
+    <%= link_to "案件を掲載する", new_job_path, class: "bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg inline-block font-medium" %>
+  </div>
+<% end %>

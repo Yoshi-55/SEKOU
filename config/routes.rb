@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   # 案件（Jobs）
   resources :jobs do
     resources :applies, only: [:new, :create]
+    collection do
+      get :posted
+    end
   end
 
   # 応募（Applies）

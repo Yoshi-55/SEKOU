@@ -23,7 +23,7 @@
       </div>
 
       <!-- Action buttons for job owner -->
-      <% if user_signed_in? && current_user.is_a?(Client) && @job.client == current_user %>
+      <% if user_signed_in? && @job.client == current_user %>
         <div class="flex gap-2">
           <% if @job.draft? || @job.pending_payment? %>
             <%= link_to "編集", edit_job_path(@job), class: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded font-medium" %>
@@ -84,8 +84,8 @@
     </div>
   <% end %>
 
-  <!-- Apply Section (for Craftsmen) -->
-  <% if user_signed_in? && current_user.is_a?(Craftsman) %>
+  <!-- Apply Section -->
+  <% if user_signed_in? && @job.client != current_user %>
     <div class="bg-white rounded-lg shadow p-6 mb-6">
       <h2 class="text-xl font-bold mb-4">この案件に応募する</h2>
       <% if @job.applies.exists?(craftsman: current_user) %>
@@ -109,7 +109,7 @@
   <% end %>
 
   <!-- Applications List (for Job Owner) -->
-  <% if user_signed_in? && current_user.is_a?(Client) && @job.client == current_user && @applies.present? %>
+  <% if user_signed_in? && @job.client == current_user && @applies.present? %>
     <div class="bg-white rounded-lg shadow p-6 mb-6">
       <h2 class="text-xl font-bold mb-4">応募者一覧 (<%= @applies.count %>件)</h2>
       <div class="space-y-4">

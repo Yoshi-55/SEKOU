@@ -1,7 +1,7 @@
 class Apply < ApplicationRecord
   # Associations
   belongs_to :job
-  belongs_to :craftsman, class_name: 'Craftsman'
+  belongs_to :craftsman, class_name: 'User'
 
   # Enums
   enum status: {

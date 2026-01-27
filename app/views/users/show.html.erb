@@ -29,7 +29,7 @@
         <span class="col-span-2 font-medium"><%= @user.phone %></span>
       </div>
 
-      <% if @user.is_a?(Client) && @user.company_address.present? %>
+      <% if @user.company_address.present? %>
         <div class="grid grid-cols-3">
           <span class="text-gray-600">会社住所</span>
           <span class="col-span-2 font-medium"><%= @user.company_address %></span>

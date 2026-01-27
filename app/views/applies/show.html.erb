@@ -80,8 +80,8 @@
     </div>
   </div>
 
-  <!-- Craftsman Info (for Client) -->
-  <% if current_user.is_a?(Client) %>
+  <!-- Applicant Info (for Job Owner) -->
+  <% if @apply.job.client == current_user %>
     <div class="bg-white rounded-lg shadow p-6 mb-6">
       <h2 class="text-xl font-bold mb-4">応募者情報</h2>
       <div class="space-y-2">
@@ -115,12 +115,12 @@
 
   <!-- Actions -->
   <div class="flex gap-4">
-    <% if current_user.is_a?(Craftsman) %>
+    <% if @apply.craftsman == current_user %>
       <%= link_to "← 応募履歴に戻る", applies_path, class: "text-blue-600 hover:underline" %>
       <% if @apply.pending? %>
         <%= button_to "応募をキャンセル", cancel_apply_path(@apply), method: :patch, data: { confirm: "本当にキャンセルしますか？" }, class: "bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded font-medium" %>
       <% end %>
-    <% elsif current_user.is_a?(Client) %>
+    <% elsif @apply.job.client == current_user %>
       <%= link_to "← 案件詳細に戻る", job_path(@apply.job), class: "text-blue-600 hover:underline" %>
       <% if @apply.pending? %>
         <%= button_to "承認する", accept_apply_path(@apply), method: :patch, class: "bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded font-medium" %>

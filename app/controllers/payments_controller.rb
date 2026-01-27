@@ -79,7 +79,7 @@ class PaymentsController < ApplicationController
   end
 
   def authorize_client!
-    unless current_user.is_a?(Client) && @job.client == current_user
+    unless @job.client == current_user
       redirect_to root_path, alert: 'アクセス権限がありません。'
     end
   end

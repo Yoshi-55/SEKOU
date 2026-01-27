@@ -18,7 +18,7 @@
   <div class="bg-white rounded-lg shadow p-6 mb-6">
     <h2 class="text-xl font-bold mb-4">お支払い内容</h2>
 
-    <%= form_with(url: payments_path, method: :post, local: true) do |f| %>
+    <%= form_with(model: @payment, url: payments_path, method: :post, local: true, data: { turbo: false }) do |f| %>
       <%= hidden_field_tag :job_id, @job.id %>
       <%= f.hidden_field :base_price, value: @payment.base_price %>
       <%= f.hidden_field :featured_price, value: @payment.featured_price %>

@@ -18,7 +18,6 @@ class PaymentsController < ApplicationController
 
   def create
     @payment = @job.payments.build(payment_params)
-    @payment.calculate_amount
 
     begin
       # Stripe Checkoutセッションを作成

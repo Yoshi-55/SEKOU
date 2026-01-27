@@ -10,9 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_01_27_070514) do
+ActiveRecord::Schema[7.1].define(version: 2026_01_27_070837) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "applies", force: :cascade do |t|
+    t.text "message", null: false
+    t.integer "desired_budget"
+    t.date "available_date"
+    t.integer "status", default: 0, null: false
+    t.datetime "applied_at"
+    t.datetime "responded_at"
+    t.bigint "job_id", null: false
+    t.bigint "craftsman_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["craftsman_id"], name: "index_applies_on_craftsman_id"
+    t.index ["job_id", "craftsman_id"], name: "index_applies_on_job_id_and_craftsman_id", unique: true
+    t.index ["job_id"], name: "index_applies_on_job_id"
+    t.index ["status"], name: "index_applies_on_status"
+  end
 
   create_table "jobs", force: :cascade do |t|
     t.string "title", null: false
@@ -62,5 +79,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_27_070514) do
     t.index ["type"], name: "index_users_on_type"
   end
 
+  add_foreign_key "applies", "jobs"
+  add_foreign_key "applies", "users", column: "craftsman_id"
   add_foreign_key "jobs", "users", column: "client_id"
 end

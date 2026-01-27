@@ -1,8 +1,8 @@
 class Job < ApplicationRecord
   # Associations
   belongs_to :client, class_name: 'Client'
-  has_many :applications, dependent: :destroy
-  has_many :craftsmen, through: :applications
+  has_many :applies, dependent: :destroy
+  has_many :craftsmen, through: :applies
   has_many :payments, dependent: :destroy
   has_many_attached :images
 

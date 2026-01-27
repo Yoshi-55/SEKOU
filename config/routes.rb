@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   # 案件（Jobs）
   resources :jobs do
-    resources :applies, only: [:create]
+    resources :applies, only: [:new, :create]
   end
 
   # 応募（Applies）

@@ -1,0 +1,59 @@
+<div class="max-w-3xl mx-auto">
+  <h1 class="text-3xl font-bold mb-6">案件に応募する</h1>
+
+  <!-- Job Summary -->
+  <div class="bg-white rounded-lg shadow p-6 mb-6">
+    <h2 class="text-xl font-bold mb-4">案件情報</h2>
+    <div class="space-y-2">
+      <p class="text-lg font-bold"><%= @job.title %></p>
+      <div class="flex gap-4 text-sm text-gray-600">
+        <span>📍 <%= @job.location %></span>
+        <span>💰 <%= number_to_currency(@job.budget, unit: "¥", precision: 0) %></span>
+        <span>📅 <%= l(@job.scheduled_date, format: :long) %></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Application Form -->
+  <div class="bg-white rounded-lg shadow p-6">
+    <%= form_with(model: [@job, @apply], class: "space-y-6") do |f| %>
+      <% if @apply.errors.any? %>
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+          <p class="font-bold mb-2"><%= pluralize(@apply.errors.count, "個") %>のエラーがあります:</p>
+          <ul class="list-disc list-inside">
+            <% @apply.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <!-- Message -->
+      <div>
+        <%= f.label :message, "応募メッセージ", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <p class="text-sm text-gray-500 mb-2">※あなたの経験やスキル、この案件に応募する理由などを記入してください</p>
+        <%= f.text_area :message, rows: 8, class: "w-full border border-gray-300 rounded px-4 py-2", placeholder: "例：\n・カーラッピング施工歴5年\n・フリート施工の実績多数\n・指定日時での作業可能\n・丁寧な仕上がりに自信あり", required: true %>
+      </div>
+
+      <!-- Desired Budget -->
+      <div>
+        <%= f.label :desired_budget, "希望予算（任意）", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <p class="text-sm text-gray-500 mb-2">※提示予算と異なる金額を希望する場合のみ入力してください</p>
+        <%= f.number_field :desired_budget, class: "w-full border border-gray-300 rounded px-4 py-2", placeholder: "100000" %>
+      </div>
+
+      <!-- Available Date -->
+      <div>
+        <%= f.label :available_date, "対応可能日（任意）", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <p class="text-sm text-gray-500 mb-2">※予定日と異なる日程を希望する場合のみ入力してください</p>
+        <%= f.date_field :available_date, class: "w-full border border-gray-300 rounded px-4 py-2" %>
+      </div>
+
+      <!-- Submit -->
+      <div class="flex gap-4">
+        <%= f.submit "応募する", class: "flex-1 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-bold cursor-pointer" %>
+        <%= link_to "キャンセル", job_path(@job), class: "px-8 py-3 rounded-lg font-medium text-gray-700 hover:bg-gray-100" %>
+      </div>
+    <% end %>
+  </div>
+</div>

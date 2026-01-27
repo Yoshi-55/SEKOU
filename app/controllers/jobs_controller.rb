@@ -40,7 +40,14 @@ class JobsController < ApplicationController
     @job.status = :draft
 
     if @job.save
-      redirect_to new_payment_path(job_id: @job.id), notice: '案件を作成しました。決済に進んでください。'
+      if free_mode?
+        # 無料モード: 即座に公開
+        @job.publish!
+        redirect_to @job, notice: '案件を公開しました。'
+      else
+        # 課金モード: 決済画面へ
+        redirect_to new_payment_path(job_id: @job.id), notice: '案件を作成しました。決済に進んでください。'
+      end
     else
       render :new, status: :unprocessable_entity
     end
@@ -92,5 +99,9 @@ class JobsController < ApplicationController
     unless current_user.is_a?(Client)
       redirect_to root_path, alert: '依頼主のみアクセスできます。'
     end
+  end
+
+  def free_mode?
+    ENV['FREE_MODE'] == 'true'
   end
 end

@@ -109,87 +109,93 @@
   </div>
 
   <!-- オプション -->
-  <div class="border-b pb-6">
-    <h2 class="text-xl font-bold mb-4">掲載オプション</h2>
-    <p class="text-sm text-gray-600 mb-4">オプションを選択すると掲載料が変わります</p>
+  <% unless free_mode? %>
+    <div class="border-b pb-6">
+      <h2 class="text-xl font-bold mb-4">掲載オプション</h2>
+      <p class="text-sm text-gray-600 mb-4">オプションを選択すると掲載料が変わります</p>
 
-    <div class="space-y-3">
-      <label class="flex items-start gap-3 p-4 border rounded-lg hover:bg-gray-50 cursor-pointer">
-        <%= f.check_box :featured, class: "mt-1", data: { action: "change->price#calculate" } %>
-        <div class="flex-1">
-          <div class="flex justify-between items-start">
-            <div>
-              <p class="font-medium">注目表示</p>
-              <p class="text-sm text-gray-600">案件一覧で目立つ位置に表示されます</p>
+      <div class="space-y-3">
+        <label class="flex items-start gap-3 p-4 border rounded-lg hover:bg-gray-50 cursor-pointer">
+          <%= f.check_box :featured, class: "mt-1", data: { action: "change->price#calculate" } %>
+          <div class="flex-1">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="font-medium">注目表示</p>
+                <p class="text-sm text-gray-600">案件一覧で目立つ位置に表示されます</p>
+              </div>
+              <p class="font-bold text-blue-600">+¥3,000</p>
             </div>
-            <p class="font-bold text-blue-600">+¥3,000</p>
           </div>
-        </div>
-      </label>
+        </label>
 
-      <label class="flex items-start gap-3 p-4 border rounded-lg hover:bg-gray-50 cursor-pointer">
-        <%= f.check_box :urgent, class: "mt-1", data: { action: "change->price#calculate" } %>
-        <div class="flex-1">
-          <div class="flex justify-between items-start">
-            <div>
-              <p class="font-medium">急募タグ</p>
-              <p class="text-sm text-gray-600">急募バッジが表示され注目度がアップします</p>
+        <label class="flex items-start gap-3 p-4 border rounded-lg hover:bg-gray-50 cursor-pointer">
+          <%= f.check_box :urgent, class: "mt-1", data: { action: "change->price#calculate" } %>
+          <div class="flex-1">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="font-medium">急募タグ</p>
+                <p class="text-sm text-gray-600">急募バッジが表示され注目度がアップします</p>
+              </div>
+              <p class="font-bold text-blue-600">+¥2,000</p>
             </div>
-            <p class="font-bold text-blue-600">+¥2,000</p>
           </div>
-        </div>
-      </label>
+        </label>
 
-      <label class="flex items-start gap-3 p-4 border rounded-lg hover:bg-gray-50 cursor-pointer">
-        <%= f.check_box :extended_period, class: "mt-1", data: { action: "change->price#calculate" } %>
-        <div class="flex-1">
-          <div class="flex justify-between items-start">
-            <div>
-              <p class="font-medium">掲載期間延長（60日間）</p>
-              <p class="text-sm text-gray-600">通常30日間の掲載期間を60日間に延長します</p>
+        <label class="flex items-start gap-3 p-4 border rounded-lg hover:bg-gray-50 cursor-pointer">
+          <%= f.check_box :extended_period, class: "mt-1", data: { action: "change->price#calculate" } %>
+          <div class="flex-1">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="font-medium">掲載期間延長（60日間）</p>
+                <p class="text-sm text-gray-600">通常30日間の掲載期間を60日間に延長します</p>
+              </div>
+              <p class="font-bold text-blue-600">+¥3,000</p>
             </div>
-            <p class="font-bold text-blue-600">+¥3,000</p>
           </div>
-        </div>
-      </label>
-    </div>
-  </div>
-
-  <!-- 料金表示 -->
-  <div class="bg-blue-50 rounded-lg p-6">
-    <div class="flex justify-between items-center mb-2">
-      <p class="text-gray-700">基本掲載料</p>
-      <p class="font-medium">¥5,000</p>
-    </div>
-    <% if job.featured %>
-      <div class="flex justify-between items-center mb-2">
-        <p class="text-gray-700">注目表示</p>
-        <p class="font-medium">¥3,000</p>
-      </div>
-    <% end %>
-    <% if job.urgent %>
-      <div class="flex justify-between items-center mb-2">
-        <p class="text-gray-700">急募タグ</p>
-        <p class="font-medium">¥2,000</p>
-      </div>
-    <% end %>
-    <% if job.extended_period %>
-      <div class="flex justify-between items-center mb-2">
-        <p class="text-gray-700">掲載期間延長</p>
-        <p class="font-medium">¥3,000</p>
-      </div>
-    <% end %>
-    <div class="border-t border-blue-200 mt-4 pt-4">
-      <div class="flex justify-between items-center">
-        <p class="text-xl font-bold">合計金額</p>
-        <p class="text-2xl font-bold text-blue-600" data-price-target="total">¥<%= number_with_delimiter(job.persisted? ? job.calculate_total_price : 5000) %></p>
+        </label>
       </div>
     </div>
-  </div>
+
+    <!-- 料金表示 -->
+    <div class="bg-blue-50 rounded-lg p-6">
+      <div class="flex justify-between items-center mb-2">
+        <p class="text-gray-700">基本掲載料</p>
+        <p class="font-medium">¥5,000</p>
+      </div>
+      <% if job.featured %>
+        <div class="flex justify-between items-center mb-2">
+          <p class="text-gray-700">注目表示</p>
+          <p class="font-medium">¥3,000</p>
+        </div>
+      <% end %>
+      <% if job.urgent %>
+        <div class="flex justify-between items-center mb-2">
+          <p class="text-gray-700">急募タグ</p>
+          <p class="font-medium">¥2,000</p>
+        </div>
+      <% end %>
+      <% if job.extended_period %>
+        <div class="flex justify-between items-center mb-2">
+          <p class="text-gray-700">掲載期間延長</p>
+          <p class="font-medium">¥3,000</p>
+        </div>
+      <% end %>
+      <div class="border-t border-blue-200 mt-4 pt-4">
+        <div class="flex justify-between items-center">
+          <p class="text-xl font-bold">合計金額</p>
+          <p class="text-2xl font-bold text-blue-600" data-price-target="total">¥<%= number_with_delimiter(job.persisted? ? job.calculate_total_price : 5000) %></p>
+        </div>
+      </div>
+    </div>
+  <% end %>
 
   <!-- Actions -->
   <div class="flex gap-4">
-    <%= f.submit "次へ（決済画面）", class: "flex-1 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-bold cursor-pointer" %>
+    <% if free_mode? %>
+      <%= f.submit "案件を公開する", class: "flex-1 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-bold cursor-pointer" %>
+    <% else %>
+      <%= f.submit "次へ（決済画面）", class: "flex-1 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-bold cursor-pointer" %>
+    <% end %>
     <%= link_to "キャンセル", jobs_path, class: "px-8 py-3 rounded-lg font-medium text-gray-700 hover:bg-gray-100" %>
   </div>
 <% end %>

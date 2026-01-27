@@ -42,7 +42,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.1]
       ## Client（依頼主）固有
       t.string :company_name
       t.text :company_address
-      t.string :stripe_customer_id
+      t.string :stripe_customer_id  # 将来のサブスクリプション機能用（現在未使用）
 
       ## Craftsman（職人）固有
       t.string :prefecture

@@ -16,6 +16,18 @@
 
     <div class="space-y-4">
       <div>
+        <%= f.label :group_id, "公開グループ（必須）", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.select :group_id,
+          options_from_collection_for_select(current_user.owned_groups, :id, :name, f.object.group_id),
+          { prompt: "グループを選択してください" },
+          class: "w-full border border-gray-300 rounded px-4 py-2" %>
+        <p class="text-sm text-gray-500 mt-1">※案件は選択したグループのメンバーのみに公開されます</p>
+        <% if current_user.owned_groups.empty? %>
+          <p class="text-sm text-red-600 mt-1">※まずグループを作成してください → <%= link_to "グループ作成", new_group_path, class: "underline" %></p>
+        <% end %>
+      </div>
+
+      <div>
         <%= f.label :title, "案件タイトル", class: "block text-sm font-medium text-gray-700 mb-1" %>
         <%= f.text_field :title, class: "w-full border border-gray-300 rounded px-4 py-2", placeholder: "例: カーラッピング施工スタッフ募集" %>
       </div>

@@ -1,4 +1,81 @@
-<div>
-  <h1 class="font-bold text-4xl">Groups#show</h1>
-  <p>Find me in app/views/groups/show.html.erb</p>
+<div class="mb-6">
+  <div class="flex justify-between items-center">
+    <div>
+      <h1 class="text-3xl font-bold mb-2"><%= @group.name %></h1>
+      <p class="text-gray-600">オーナー: <%= @group.owner.name %></p>
+    </div>
+    <% if @group.owner == current_user %>
+      <div class="flex gap-2">
+        <%= link_to "編集", edit_group_path(@group), class: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded" %>
+        <%= button_to "削除", group_path(@group), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<% if @group.description.present? %>
+  <div class="bg-white rounded-lg shadow p-6 mb-6">
+    <h2 class="text-lg font-bold mb-2">グループ説明</h2>
+    <p class="text-gray-700"><%= simple_format(@group.description) %></p>
+  </div>
+<% end %>
+
+<!-- メンバー一覧 -->
+<div class="bg-white rounded-lg shadow p-6 mb-6">
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-lg font-bold">メンバー (<%= @group.members.count %>人)</h2>
+  </div>
+
+  <div class="space-y-3">
+    <% @group.group_memberships.includes(:user).each do |membership| %>
+      <div class="flex justify-between items-center p-3 border rounded">
+        <div class="flex items-center gap-3">
+          <div>
+            <p class="font-medium"><%= membership.user.name %></p>
+            <p class="text-sm text-gray-600"><%= membership.user.email %></p>
+          </div>
+          <% if membership.admin? %>
+            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">管理者</span>
+          <% end %>
+          <% if membership.user == @group.owner %>
+            <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">オーナー</span>
+          <% end %>
+        </div>
+        <% if @group.owner == current_user && membership.user != @group.owner %>
+          <%= button_to "削除", remove_member_group_path(@group, user_id: membership.user.id), method: :delete, data: { confirm: "#{membership.user.name}さんをグループから削除しますか？" }, class: "text-red-600 hover:underline text-sm" %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <% if @group.owner == current_user %>
+    <div class="mt-6 pt-6 border-t">
+      <h3 class="font-bold mb-3">メンバーを追加</h3>
+      <%= form_with url: add_member_group_path(@group), method: :post, class: "flex gap-2" do |f| %>
+        <%= text_field_tag :email, nil, placeholder: "追加するユーザーのメールアドレス", class: "flex-1 px-4 py-2 border border-gray-300 rounded" %>
+        <%= button_tag "追加", class: "bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded font-medium" %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<!-- グループの案件一覧 -->
+<div class="bg-white rounded-lg shadow p-6">
+  <h2 class="text-lg font-bold mb-4">グループの案件 (<%= @group.jobs.count %>件)</h2>
+
+  <% if @group.jobs.present? %>
+    <div class="space-y-3">
+      <% @group.jobs.recent.limit(5).each do |job| %>
+        <%= link_to job_path(job), class: "block border rounded p-3 hover:shadow transition" do %>
+          <p class="font-medium mb-1"><%= job.title %></p>
+          <div class="flex gap-4 text-sm text-gray-600">
+            <span>📍 <%= job.location %></span>
+            <span>💰 <%= number_to_currency(job.budget, unit: "¥", precision: 0) %></span>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-gray-500 text-center py-4">まだ案件がありません</p>
+  <% end %>
 </div>

@@ -1,7 +1,7 @@
 class Job < ApplicationRecord
   # Associations
   belongs_to :client, class_name: 'User'
-  belongs_to :group, optional: true
+  belongs_to :group
   has_many :applies, dependent: :destroy
   has_many :craftsmen, through: :applies, source: :craftsman
   has_many :payments, dependent: :destroy
@@ -22,6 +22,7 @@ class Job < ApplicationRecord
   validate :budget_must_be_multiple_of_5000
   validates :scheduled_date, presence: true
   validates :required_people, presence: true, numericality: { greater_than: 0 }
+  validates :group_id, presence: true
 
   # Scopes
   scope :published_jobs, -> { where(status: :published).where('expires_at > ?', Time.current) }

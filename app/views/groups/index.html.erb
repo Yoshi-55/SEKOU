@@ -1,4 +1,47 @@
-<div>
-  <h1 class="font-bold text-4xl">Groups#index</h1>
-  <p>Find me in app/views/groups/index.html.erb</p>
+<div class="mb-6">
+  <div class="flex justify-between items-center">
+    <div>
+      <h1 class="text-3xl font-bold mb-2">マイグループ</h1>
+      <p class="text-gray-600">あなたが参加しているグループの一覧です</p>
+    </div>
+    <%= link_to "新規グループ作成", new_group_path, class: "bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium" %>
+  </div>
 </div>
+
+<% if @groups.present? %>
+  <div class="grid md:grid-cols-2 gap-6">
+    <% @groups.each do |group| %>
+      <div class="bg-white rounded-lg shadow p-6">
+        <div class="flex justify-between items-start mb-4">
+          <div class="flex-1">
+            <%= link_to group.name, group_path(group), class: "text-xl font-bold text-blue-600 hover:underline" %>
+            <% if group.owner == current_user %>
+              <span class="ml-2 text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">オーナー</span>
+            <% end %>
+          </div>
+        </div>
+
+        <% if group.description.present? %>
+          <p class="text-gray-600 mb-4"><%= truncate(group.description, length: 100) %></p>
+        <% end %>
+
+        <div class="flex items-center gap-4 text-sm text-gray-600 mb-4">
+          <span>👤 メンバー: <%= group.members.count %>人</span>
+          <span>📋 案件: <%= group.jobs.count %>件</span>
+        </div>
+
+        <div class="flex gap-2">
+          <%= link_to "詳細", group_path(group), class: "text-blue-600 hover:underline text-sm" %>
+          <% if group.owner == current_user %>
+            <%= link_to "編集", edit_group_path(group), class: "text-blue-600 hover:underline text-sm" %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div class="bg-white rounded-lg shadow p-12 text-center">
+    <p class="text-gray-500 text-lg mb-4">まだグループに参加していません</p>
+    <%= link_to "グループを作成する", new_group_path, class: "bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg inline-block font-medium" %>
+  </div>
+<% end %>

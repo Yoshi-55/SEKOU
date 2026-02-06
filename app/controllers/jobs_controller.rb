@@ -6,6 +6,16 @@ class JobsController < ApplicationController
   def index
     @jobs = Job.published_jobs.recent
 
+    # グループによる表示制限（全案件がグループ限定）
+    if user_signed_in?
+      # ログインユーザーが所属するグループの案件のみ表示
+      group_ids = current_user.groups.pluck(:id)
+      @jobs = @jobs.where(group_id: group_ids) if group_ids.any?
+    else
+      # 未ログインユーザーは何も表示しない
+      @jobs = @jobs.none
+    end
+
     # フィルタリング
     @jobs = @jobs.where(job_type: params[:job_type]) if params[:job_type].present?
     @jobs = @jobs.where(location: params[:location]) if params[:location].present?
@@ -28,6 +38,12 @@ class JobsController < ApplicationController
   end
 
   def show
+    # グループメンバーのみアクセス可能
+    unless user_signed_in? && (@job.group.members.include?(current_user) || @job.client == current_user)
+      redirect_to root_path, alert: 'この案件にアクセスする権限がありません。'
+      return
+    end
+
     @applies = @job.applies.includes(:craftsman) if user_signed_in? && @job.client == current_user
   end
 
@@ -87,7 +103,7 @@ class JobsController < ApplicationController
   def job_params
     params.require(:job).permit(
       :title, :description, :job_type, :location, :address,
-      :budget, :scheduled_date, :required_people
+      :budget, :scheduled_date, :required_people, :group_id
     )
   end
 

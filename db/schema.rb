@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_01_27_161030) do
+ActiveRecord::Schema[7.1].define(version: 2026_02_06_043708) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -59,6 +59,26 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_27_161030) do
     t.index ["status"], name: "index_applies_on_status"
   end
 
+  create_table "group_memberships", force: :cascade do |t|
+    t.bigint "group_id", null: false
+    t.bigint "user_id", null: false
+    t.integer "role", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id", "user_id"], name: "index_group_memberships_on_group_id_and_user_id", unique: true
+    t.index ["group_id"], name: "index_group_memberships_on_group_id"
+    t.index ["user_id"], name: "index_group_memberships_on_user_id"
+  end
+
+  create_table "groups", force: :cascade do |t|
+    t.string "name"
+    t.integer "owner_id"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["owner_id"], name: "index_groups_on_owner_id"
+  end
+
   create_table "jobs", force: :cascade do |t|
     t.string "title", null: false
     t.text "description", null: false
@@ -74,7 +94,9 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_27_161030) do
     t.bigint "client_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "group_id"
     t.index ["client_id"], name: "index_jobs_on_client_id"
+    t.index ["group_id"], name: "index_jobs_on_group_id"
     t.index ["job_type"], name: "index_jobs_on_job_type"
     t.index ["location"], name: "index_jobs_on_location"
     t.index ["published_at"], name: "index_jobs_on_published_at"
@@ -124,6 +146,9 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_27_161030) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "applies", "jobs"
   add_foreign_key "applies", "users", column: "craftsman_id"
+  add_foreign_key "group_memberships", "groups"
+  add_foreign_key "group_memberships", "users"
+  add_foreign_key "jobs", "groups"
   add_foreign_key "jobs", "users", column: "client_id"
   add_foreign_key "payments", "jobs"
 end

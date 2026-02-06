@@ -6,6 +6,14 @@ Rails.application.routes.draw do
   # プロフィール
   resource :profile, only: [:show, :edit, :update], controller: 'users'
 
+  # グループ（Groups）
+  resources :groups do
+    member do
+      post :add_member
+      delete :remove_member
+    end
+  end
+
   # 案件（Jobs）
   resources :jobs do
     resources :applies, only: [:new, :create]

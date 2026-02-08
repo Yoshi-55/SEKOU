@@ -219,8 +219,6 @@ apply1 = Apply.create!(
   job: job1,
   craftsman: craftsman1,
   message: "8年の経験を持つカーラッピング職人です。高級車のフルラッピングも多数経験しております。\n\nメルセデスベンツのラッピング経験もあり、マットブラックの施工も得意としています。丁寧に仕上げますので、ぜひご検討ください。",
-  desired_budget: 30000,
-  available_date: job1.scheduled_date,
   status: :pending,
   applied_at: Time.current - 1.day
 )
@@ -230,8 +228,6 @@ apply2 = Apply.create!(
   job: job1,
   craftsman: craftsman2,
   message: "5年間フィルム施工をしてきましたが、最近カーラッピングの分野にも力を入れています。\n\n丁寧な作業が得意です。高級車の施工経験もありますので、安心してお任せください。",
-  desired_budget: 28000,
-  available_date: job1.scheduled_date,
   status: :pending,
   applied_at: Time.current - 6.hours
 )
@@ -241,8 +237,6 @@ apply3 = Apply.create!(
   job: job3,
   craftsman: craftsman1,
   message: "PPF施工の経験が豊富です。XPEL Ultimate Plusの施工経験も多数あります。\n\nポルシェなどのスポーツカーへの施工も経験しており、丁寧に作業いたします。",
-  desired_budget: 35000,
-  available_date: job3.scheduled_date,
   status: :accepted,
   applied_at: Time.current - 2.days,
   responded_at: Time.current - 1.day
@@ -253,8 +247,6 @@ apply4 = Apply.create!(
   job: job2,
   craftsman: craftsman3,
   message: "フリート施工の経験が豊富です。同じデザインを複数台に施工する作業は得意としています。\n\nハイエースへの施工経験も多数ありますので、効率よく作業できます。",
-  desired_budget: 25000,
-  available_date: job2.scheduled_date,
   status: :pending,
   applied_at: Time.current - 3.hours
 )
@@ -264,8 +256,6 @@ apply5 = Apply.create!(
   job: job5,
   craftsman: craftsman2,
   message: "窓ガラスフィルム施工が専門です。UVカット・断熱フィルムの施工経験も豊富です。\n\n5台の施工も問題なく対応できます。綺麗に仕上げますので、よろしくお願いいたします。",
-  desired_budget: 20000,
-  available_date: job5.scheduled_date,
   status: :pending,
   applied_at: Time.current - 12.hours
 )

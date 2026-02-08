@@ -1,97 +1,102 @@
 <!-- Hero Section -->
-<div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-lg shadow-lg p-12 mb-12">
-  <div class="max-w-3xl">
-    <h1 class="text-4xl md:text-5xl font-bold mb-4">
+<div class="relative bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 text-white rounded-2xl shadow-2xl p-16 mb-16 overflow-hidden">
+  <div class="absolute inset-0 bg-grid-white/[0.05] bg-[size:20px_20px]"></div>
+  <div class="relative max-w-4xl">
+    <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
       職人と職人を<br>
       マッチングするプラットフォーム
     </h1>
-    <p class="text-xl mb-8">
+    <p class="text-xl md:text-2xl mb-10 text-blue-100 leading-relaxed">
       カーラッピング・フリートなどの施工案件を簡単に掲載・応募できます
     </p>
-    <div class="flex gap-4">
+    <div class="flex flex-wrap gap-4">
       <% if user_signed_in? %>
-        <%= link_to "案件を掲載する", new_job_path, class: "bg-white text-blue-600 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition" %>
+        <%= link_to "案件を掲載する", new_job_path, class: "bg-white text-blue-600 px-8 py-4 rounded-xl font-bold hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5" %>
       <% else %>
-        <%= link_to "案件を掲載する", new_user_registration_path, class: "bg-white text-blue-600 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition" %>
+        <%= link_to "案件を掲載する", new_user_registration_path, class: "bg-white text-blue-600 px-8 py-4 rounded-xl font-bold hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5" %>
       <% end %>
-      <%= link_to "案件を探す", jobs_path, class: "border-2 border-white text-white px-8 py-3 rounded-lg font-bold hover:bg-white hover:text-blue-600 transition" %>
+      <%= link_to "案件を探す", jobs_path, class: "border-2 border-white text-white px-8 py-4 rounded-xl font-bold hover:bg-white hover:text-blue-600 transition-all backdrop-blur-sm" %>
     </div>
   </div>
 </div>
 
 <!-- Features Section -->
-<div class="grid md:grid-cols-2 gap-8 mb-12">
-  <div class="bg-white rounded-lg shadow p-6">
-    <div class="text-blue-600 text-4xl mb-4">👥</div>
-    <h3 class="text-xl font-bold mb-2">グループ限定公開</h3>
-    <p class="text-gray-600">
+<div class="grid md:grid-cols-2 gap-8 mb-16">
+  <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all p-8 border border-gray-100 hover:border-blue-200 transform hover:-translate-y-1">
+    <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center text-3xl mb-6">
+      👥
+    </div>
+    <h3 class="text-2xl font-bold mb-3 text-gray-900">グループ限定公開</h3>
+    <p class="text-gray-600 leading-relaxed">
       案件はグループメンバー全員に公開され、誰でも掲載・応募できます。
     </p>
   </div>
 
-  <div class="bg-white rounded-lg shadow p-6">
-    <div class="text-blue-600 text-4xl mb-4">🔒</div>
-    <h3 class="text-xl font-bold mb-2">安心・安全</h3>
-    <p class="text-gray-600">
+  <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all p-8 border border-gray-100 hover:border-blue-200 transform hover:-translate-y-1">
+    <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center text-3xl mb-6">
+      🔒
+    </div>
+    <h3 class="text-2xl font-bold mb-3 text-gray-900">安心・安全</h3>
+    <p class="text-gray-600 leading-relaxed">
       詳細住所は応募承認後に表示。クローズドな環境で安心して取引できます。
     </p>
   </div>
 </div>
 
 <!-- How to Use Section -->
-<div class="bg-white rounded-lg shadow p-8">
-  <h2 class="text-2xl font-bold mb-6">使い方</h2>
-  <div class="space-y-6">
+<div class="bg-white rounded-2xl shadow-xl p-10 border border-gray-100">
+  <h2 class="text-3xl font-bold mb-10 text-center text-gray-900">使い方</h2>
+  <div class="space-y-8">
     <!-- Step 1 -->
-    <div class="flex gap-4">
-      <div class="flex-shrink-0 w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
+    <div class="flex gap-6 items-start group">
+      <div class="shrink-0 w-14 h-14 bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-2xl flex items-center justify-center font-bold text-xl shadow-lg group-hover:shadow-xl transition-all">
         1
       </div>
       <div class="flex-1">
-        <h3 class="font-bold text-lg mb-2">グループを作成・参加</h3>
-        <p class="text-gray-600">信頼できる仲間でグループを作成するか、招待を受けてグループに参加します。</p>
+        <h3 class="font-bold text-xl mb-3 text-gray-900">グループを作成・参加</h3>
+        <p class="text-gray-600 leading-relaxed">信頼できる仲間でグループを作成するか、招待を受けてグループに参加します。</p>
       </div>
     </div>
 
     <!-- Step 2 -->
-    <div class="flex gap-4">
-      <div class="flex-shrink-0 w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
+    <div class="flex gap-6 items-start group">
+      <div class="shrink-0 w-14 h-14 bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-2xl flex items-center justify-center font-bold text-xl shadow-lg group-hover:shadow-xl transition-all">
         2
       </div>
       <div class="flex-1">
-        <h3 class="font-bold text-lg mb-2">案件を掲載</h3>
-        <p class="text-gray-600">施工案件を掲載します。グループメンバーのみに公開されます。</p>
+        <h3 class="font-bold text-xl mb-3 text-gray-900">案件を掲載</h3>
+        <p class="text-gray-600 leading-relaxed">施工案件を掲載します。グループメンバーのみに公開されます。</p>
       </div>
     </div>
 
     <!-- Step 3 -->
-    <div class="flex gap-4">
-      <div class="flex-shrink-0 w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
+    <div class="flex gap-6 items-start group">
+      <div class="shrink-0 w-14 h-14 bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-2xl flex items-center justify-center font-bold text-xl shadow-lg group-hover:shadow-xl transition-all">
         3
       </div>
       <div class="flex-1">
-        <h3 class="font-bold text-lg mb-2">応募・マッチング</h3>
-        <p class="text-gray-600">案件に応募したり、応募者を承認してマッチングします。詳細住所は承認後に表示されます。</p>
+        <h3 class="font-bold text-xl mb-3 text-gray-900">応募・マッチング</h3>
+        <p class="text-gray-600 leading-relaxed">案件に応募したり、応募者を承認してマッチングします。詳細住所は承認後に表示されます。</p>
       </div>
     </div>
 
     <!-- Step 4 -->
-    <div class="flex gap-4">
-      <div class="flex-shrink-0 w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
+    <div class="flex gap-6 items-start group">
+      <div class="shrink-0 w-14 h-14 bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-2xl flex items-center justify-center font-bold text-xl shadow-lg group-hover:shadow-xl transition-all">
         4
       </div>
       <div class="flex-1">
-        <h3 class="font-bold text-lg mb-2">施工・完了</h3>
-        <p class="text-gray-600">マッチングが成立したら、施工を行い案件を完了します。</p>
+        <h3 class="font-bold text-xl mb-3 text-gray-900">施工・完了</h3>
+        <p class="text-gray-600 leading-relaxed">マッチングが成立したら、施工を行い案件を完了します。</p>
       </div>
     </div>
   </div>
 
-  <div class="text-center mt-8">
+  <div class="text-center mt-12">
     <% if user_signed_in? %>
-      <%= link_to "グループを作成する", new_group_path, class: "bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-bold inline-block" %>
+      <%= link_to "グループを作成する", new_group_path, class: "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-10 py-4 rounded-xl font-bold inline-block shadow-lg hover:shadow-2xl transform hover:-translate-y-0.5 transition-all" %>
     <% else %>
-      <%= link_to "今すぐ始める", new_user_registration_path, class: "bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-bold inline-block" %>
+      <%= link_to "今すぐ始める", new_user_registration_path, class: "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-10 py-4 rounded-xl font-bold inline-block shadow-lg hover:shadow-2xl transform hover:-translate-y-0.5 transition-all" %>
     <% end %>
   </div>
 </div>

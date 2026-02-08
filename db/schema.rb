@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_02_06_043708) do
+ActiveRecord::Schema[7.1].define(version: 2026_02_08_092935) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -44,8 +44,6 @@ ActiveRecord::Schema[7.1].define(version: 2026_02_06_043708) do
 
   create_table "applies", force: :cascade do |t|
     t.text "message", null: false
-    t.integer "desired_budget"
-    t.date "available_date"
     t.integer "status", default: 0, null: false
     t.datetime "applied_at"
     t.datetime "responded_at"

@@ -46,7 +46,11 @@
       <% if @job.address.present? %>
         <div>
           <p class="text-sm text-gray-600 mb-1">詳細住所</p>
-          <p class="font-bold text-lg"><%= @job.address %></p>
+          <% if user_signed_in? && (@job.client == current_user || @job.applies.accepted.exists?(craftsman: current_user)) %>
+            <p class="font-bold text-lg"><%= @job.address %></p>
+          <% else %>
+            <p class="text-gray-500 italic">応募承認後に表示されます</p>
+          <% end %>
         </div>
       <% end %>
     </div>
@@ -111,14 +115,6 @@
               <p class="text-sm text-gray-600 mb-1">メッセージ</p>
               <p class="text-gray-800"><%= apply.message %></p>
             </div>
-
-            <% if apply.desired_budget.present? %>
-              <p class="text-sm text-gray-600">希望予算: <span class="font-bold"><%= number_to_currency(apply.desired_budget, unit: "¥", precision: 0) %></span></p>
-            <% end %>
-
-            <% if apply.available_date.present? %>
-              <p class="text-sm text-gray-600">対応可能日: <span class="font-bold"><%= l(apply.available_date, format: :long) %></span></p>
-            <% end %>
 
             <% if apply.pending? %>
               <div class="flex gap-2 mt-4">

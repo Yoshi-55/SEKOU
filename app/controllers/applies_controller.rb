@@ -73,7 +73,7 @@ class AppliesController < ApplicationController
   end
 
   def apply_params
-    params.require(:apply).permit(:message, :desired_budget, :available_date)
+    params.require(:apply).permit(:message)
   end
 
   def can_view_apply?

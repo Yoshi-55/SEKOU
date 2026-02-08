@@ -53,18 +53,6 @@
           <p class="text-gray-800"><%= truncate(apply.message, length: 150) %></p>
         </div>
 
-        <!-- Optional Fields -->
-        <% if apply.desired_budget.present? || apply.available_date.present? %>
-          <div class="flex gap-4 text-sm text-gray-600 mb-4">
-            <% if apply.desired_budget.present? %>
-              <span>希望予算: <span class="font-bold"><%= number_to_currency(apply.desired_budget, unit: "¥", precision: 0) %></span></span>
-            <% end %>
-            <% if apply.available_date.present? %>
-              <span>対応可能日: <span class="font-bold"><%= l(apply.available_date, format: :long) %></span></span>
-            <% end %>
-          </div>
-        <% end %>
-
         <!-- Response -->
         <% if apply.responded_at.present? %>
           <div class="border-t pt-4">

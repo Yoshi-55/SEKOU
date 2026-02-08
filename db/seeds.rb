@@ -77,12 +77,40 @@ craftsman3 = User.create!(
 
 puts "Users created: #{User.count}"
 
+# Create demo groups
+puts "Creating demo groups..."
+
+# グループ1: 東京カーラッピングチーム
+group1 = Group.create!(
+  owner: client1,
+  name: "東京カーラッピングチーム",
+  description: "東京を中心に活動するカーラッピング職人のグループです。信頼できるメンバーで案件を共有しています。"
+)
+
+# グループ2: 神奈川PPF職人会
+group2 = Group.create!(
+  owner: client2,
+  name: "神奈川PPF職人会",
+  description: "神奈川エリアでPPF施工を行う職人のグループです。技術向上と情報共有を目的としています。"
+)
+
+# グループメンバーを追加（オーナーは自動追加されるので、他のメンバーのみ追加）
+group1.group_memberships.create!(user: craftsman1, role: :member)
+group1.group_memberships.create!(user: craftsman2, role: :member)
+group1.group_memberships.create!(user: craftsman3, role: :member)
+
+group2.group_memberships.create!(user: craftsman1, role: :member)
+group2.group_memberships.create!(user: craftsman2, role: :member)
+
+puts "Groups created: #{Group.count}"
+
 # Create demo jobs
 puts "Creating demo jobs..."
 
 # 案件1: カーラッピング（公開中、応募あり）
 job1 = Job.create!(
   client: client1,
+  group: group1,
   title: "高級セダンのフルラッピング施工募集",
   description: "高級セダン（メルセデスベンツ Sクラス）のフルラッピング施工をお願いします。\n\nカラー: マットブラック\n納期: 3日間を予定\n場所: 東京都渋谷区の弊社工場\n\n丁寧な施工ができる方を募集しています。経験豊富な方優遇。",
   job_type: "car_wrapping",
@@ -99,6 +127,7 @@ job1 = Job.create!(
 # 案件2: フリート施工（公開中）
 job2 = Job.create!(
   client: client1,
+  group: group1,
   title: "企業ロゴ入り商用車3台のラッピング",
   description: "企業の営業車両3台にロゴとデザインを施工します。\n\n車種: トヨタ ハイエース 3台\nデザイン: 側面に企業ロゴ\n納期: 2日間\n\n同じデザインを3台に施工するため、効率よく作業できる方を希望します。",
   job_type: "fleet",
@@ -115,6 +144,7 @@ job2 = Job.create!(
 # 案件3: PPF施工（公開中）
 job3 = Job.create!(
   client: client2,
+  group: group2,
   title: "新車スポーツカーのPPF施工",
   description: "納車されたばかりのポルシェ 911にPPFを施工します。\n\n施工範囲: フロント部分（ボンネット、フロントバンパー、ヘッドライト）\nフィルム: XPEL Ultimate Plus\n納期: 1日\n\nPPF施工経験必須。丁寧な作業ができる方を募集。",
   job_type: "ppf",
@@ -131,6 +161,7 @@ job3 = Job.create!(
 # 案件4: カーラッピング（公開中、応募なし）
 job4 = Job.create!(
   client: client2,
+  group: group2,
   title: "スポーツカーのルーフラッピング",
   description: "BMW M4のルーフ部分のみカーボン調ラッピングを施工します。\n\n施工箇所: ルーフのみ\nカラー: カーボンブラック\n納期: 半日程度\n\n小規模な案件ですが、丁寧に仕上げていただける方を希望します。",
   job_type: "car_wrapping",
@@ -147,6 +178,7 @@ job4 = Job.create!(
 # 案件5: その他（公開中）
 job5 = Job.create!(
   client: client1,
+  group: group1,
   title: "ショールーム展示車の窓ガラスフィルム施工",
   description: "ショールームに展示する車両5台の窓ガラスにUVカットフィルムを施工します。\n\n車種: 高級輸入車5台\nフィルム: UVカット・断熱フィルム\n納期: 2日間\n場所: 渋谷区のショールーム\n\n窓ガラスフィルム施工の経験がある方を募集します。",
   job_type: "other",
@@ -163,6 +195,7 @@ job5 = Job.create!(
 # 案件6: フリート（大阪）
 job6 = Job.create!(
   client: client1,
+  group: group1,
   title: "配送トラック10台のフリート施工",
   description: "運送会社の配送トラック10台に企業ロゴとデザインを施工します。\n\n車種: 2tトラック 10台\nデザイン: 側面・後部に企業ロゴ\n納期: 5日間\n\n大規模案件のため、複数名で対応できるチームを優遇します。",
   job_type: "fleet",

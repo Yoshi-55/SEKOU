@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :group do
-    name { "MyString" }
+    name { 'MyString' }
     owner_id { 1 }
-    description { "MyText" }
+    description { 'MyText' }
   end
 end

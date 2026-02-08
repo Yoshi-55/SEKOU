@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Apply < ApplicationRecord
   # Associations
   belongs_to :job
@@ -35,6 +37,7 @@ class Apply < ApplicationRecord
 
   def cancel!
     return false unless pending?
+
     update!(status: :cancelled)
   end
 

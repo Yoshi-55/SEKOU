@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Job < ApplicationRecord
   # Associations
   belongs_to :client, class_name: 'User'
@@ -44,8 +46,8 @@ class Job < ApplicationRecord
   private
 
   def budget_must_be_multiple_of_5000
-    if budget.present? && budget % 5000 != 0
-      errors.add(:budget, 'は5000円単位で入力してください')
-    end
+    return unless budget.present? && budget % 5000 != 0
+
+    errors.add(:budget, 'は5000円単位で入力してください')
   end
 end

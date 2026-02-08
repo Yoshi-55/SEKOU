@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class GroupsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_group, only: [:show, :edit, :update, :destroy, :add_member, :remove_member]
-  before_action :authorize_owner!, only: [:edit, :update, :destroy, :add_member, :remove_member]
+  before_action :set_group, only: %i[show edit update destroy add_member remove_member]
+  before_action :authorize_owner!, only: %i[edit update destroy add_member remove_member]
 
   def index
     @groups = current_user.groups.includes(:owner, :members)
@@ -22,13 +24,12 @@ class GroupsController < ApplicationController
   end
 
   def show
-    unless @group.members.include?(current_user)
-      redirect_to groups_path, alert: 'このグループにアクセスする権限がありません。'
-    end
+    return if @group.members.include?(current_user)
+
+    redirect_to groups_path, alert: 'このグループにアクセスする権限がありません。'
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @group.update(group_params)
@@ -81,8 +82,8 @@ class GroupsController < ApplicationController
   end
 
   def authorize_owner!
-    unless @group.owner == current_user
-      redirect_to @group, alert: 'オーナーのみが実行できます。'
-    end
+    return if @group.owner == current_user
+
+    redirect_to @group, alert: 'オーナーのみが実行できます。'
   end
 end

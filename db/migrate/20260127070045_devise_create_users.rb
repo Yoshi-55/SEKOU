@@ -4,8 +4,8 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.1]
   def change
     create_table :users do |t|
       ## Database authenticatable
-      t.string :email,              null: false, default: ""
-      t.string :encrypted_password, null: false, default: ""
+      t.string :email,              null: false, default: ''
+      t.string :encrypted_password, null: false, default: ''
 
       ## Recoverable
       t.string   :reset_password_token
@@ -42,7 +42,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.1]
       ## Client（依頼主）固有
       t.string :company_name
       t.text :company_address
-      t.string :stripe_customer_id  # 将来のサブスクリプション機能用（現在未使用）
+      t.string :stripe_customer_id # 将来のサブスクリプション機能用（現在未使用）
 
       ## Craftsman（職人）固有
       t.string :prefecture

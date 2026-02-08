@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateApplies < ActiveRecord::Migration[7.1]
   def change
     create_table :applies do |t|
@@ -19,6 +21,6 @@ class CreateApplies < ActiveRecord::Migration[7.1]
     end
 
     add_index :applies, :status
-    add_index :applies, [:job_id, :craftsman_id], unique: true
+    add_index :applies, %i[job_id craftsman_id], unique: true
   end
 end

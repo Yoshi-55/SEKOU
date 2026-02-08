@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GroupMembership < ApplicationRecord
   belongs_to :group
   belongs_to :user
@@ -7,5 +9,5 @@ class GroupMembership < ApplicationRecord
     admin: 1
   }
 
-  validates :group_id, uniqueness: { scope: :user_id, message: "既にこのグループのメンバーです" }
+  validates :group_id, uniqueness: { scope: :user_id, message: '既にこのグループのメンバーです' }
 end

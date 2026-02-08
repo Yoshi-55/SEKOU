@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UpdateJobStatusEnum < ActiveRecord::Migration[7.1]
   def up
     # 既存のdraft(0)のレコードをpending_payment(0)に変更

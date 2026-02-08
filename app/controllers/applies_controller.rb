@@ -1,16 +1,18 @@
+# frozen_string_literal: true
+
 class AppliesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_apply, only: [:show, :accept, :reject, :cancel]
-  before_action :set_job, only: [:new, :create]
+  before_action :set_apply, only: %i[show accept reject cancel]
+  before_action :set_job, only: %i[new create]
 
   def index
     @applies = current_user.applies.includes(:job).recent
   end
 
   def show
-    unless can_view_apply?
-      redirect_to root_path, alert: 'アクセス権限がありません。'
-    end
+    return if can_view_apply?
+
+    redirect_to root_path, alert: 'アクセス権限がありません。'
   end
 
   def new

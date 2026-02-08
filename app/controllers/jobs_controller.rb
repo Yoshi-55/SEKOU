@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class JobsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_job, only: [:show, :edit, :update, :destroy]
-  before_action :authorize_job_owner!, only: [:edit, :update, :destroy]
+  before_action :authenticate_user!, except: %i[index show]
+  before_action :set_job, only: %i[show edit update destroy]
+  before_action :authorize_job_owner!, only: %i[edit update destroy]
 
   def index
     @jobs = Job.published_jobs.recent
@@ -23,16 +25,16 @@ class JobsController < ApplicationController
     @jobs = @jobs.where('budget <= ?', params[:max_budget]) if params[:max_budget].present?
 
     # ソート
-    case params[:sort]
-    when 'budget_desc'
-      @jobs = @jobs.order(budget: :desc)
-    when 'budget_asc'
-      @jobs = @jobs.order(budget: :asc)
-    when 'date'
-      @jobs = @jobs.order(scheduled_date: :asc)
-    else
-      @jobs = @jobs.recent
-    end
+    @jobs = case params[:sort]
+            when 'budget_desc'
+              @jobs.order(budget: :desc)
+            when 'budget_asc'
+              @jobs.order(budget: :asc)
+            when 'date'
+              @jobs.order(scheduled_date: :asc)
+            else
+              @jobs.recent
+            end
 
     @jobs = @jobs.page(params[:page]).per(20)
   end
@@ -70,9 +72,9 @@ class JobsController < ApplicationController
   end
 
   def edit
-    if @job.applies.accepted.exists?
-      redirect_to @job, alert: '承認済みの応募がある案件は編集できません。'
-    end
+    return unless @job.applies.accepted.exists?
+
+    redirect_to @job, alert: '承認済みの応募がある案件は編集できません。'
   end
 
   def update
@@ -108,8 +110,8 @@ class JobsController < ApplicationController
   end
 
   def authorize_job_owner!
-    unless @job.client == current_user
-      redirect_to root_path, alert: 'アクセス権限がありません。'
-    end
+    return if @job.client == current_user
+
+    redirect_to root_path, alert: 'アクセス権限がありません。'
   end
 end

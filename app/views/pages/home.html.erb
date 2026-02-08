@@ -25,7 +25,7 @@
     <div class="text-blue-600 text-4xl mb-4">👥</div>
     <h3 class="text-xl font-bold mb-2">グループ限定公開</h3>
     <p class="text-gray-600">
-      信頼できる仲間だけで案件を共有。グループメンバーのみに案件が表示されます。
+      案件はグループメンバー全員に公開され、誰でも掲載・応募できます。
     </p>
   </div>
 
@@ -33,7 +33,7 @@
     <div class="text-blue-600 text-4xl mb-4">💰</div>
     <h3 class="text-xl font-bold mb-2">基本無料(DEMO)</h3>
     <p class="text-gray-600">
-      案件の掲載は基本無料。登録料や月額費用も一切かかりません。
+      案件の掲載・応募は完全無料。登録料や手数料も一切かかりません。
     </p>
   </div>
 
@@ -41,37 +41,66 @@
     <div class="text-blue-600 text-4xl mb-4">🔒</div>
     <h3 class="text-xl font-bold mb-2">安心・安全</h3>
     <p class="text-gray-600">
-      知っている人だけのクローズドな環境で、安心して案件のやり取りができます。
+      詳細住所は応募承認後に表示。クローズドな環境で安心して取引できます。
     </p>
   </div>
 </div>
 
-<% if user_signed_in? && current_user.groups.any? %>
-  <!-- Recent Jobs Section -->
-  <div class="bg-white rounded-lg shadow p-8">
-    <h2 class="text-2xl font-bold mb-6">新着案件</h2>
-    <% if @recent_jobs.present? %>
-      <div class="space-y-4">
-        <% @recent_jobs.each do |job| %>
-          <%= link_to job_path(job), class: "block border rounded-lg p-4 hover:shadow-md transition" do %>
-            <div>
-              <h3 class="font-bold text-lg mb-1"><%= job.title %></h3>
-              <p class="text-gray-600 text-sm mb-2"><%= truncate(job.description, length: 100) %></p>
-              <div class="flex gap-4 text-sm text-gray-500">
-                <span>📍 <%= job.location %></span>
-                <span>💰 <%= number_to_currency(job.budget, unit: "¥", precision: 0) %></span>
-                <span>📅 <%= l(job.scheduled_date, format: :short) %></span>
-              </div>
-            </div>
-          <% end %>
-        <% end %>
+<!-- How to Use Section -->
+<div class="bg-white rounded-lg shadow p-8">
+  <h2 class="text-2xl font-bold mb-6">使い方</h2>
+  <div class="space-y-6">
+    <!-- Step 1 -->
+    <div class="flex gap-4">
+      <div class="flex-shrink-0 w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
+        1
       </div>
-      <div class="text-center mt-6">
-        <%= link_to "すべての案件を見る", jobs_path, class: "text-blue-600 hover:underline" %>
+      <div class="flex-1">
+        <h3 class="font-bold text-lg mb-2">グループを作成・参加</h3>
+        <p class="text-gray-600">信頼できる仲間でグループを作成するか、招待を受けてグループに参加します。</p>
       </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="flex gap-4">
+      <div class="flex-shrink-0 w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
+        2
+      </div>
+      <div class="flex-1">
+        <h3 class="font-bold text-lg mb-2">案件を掲載</h3>
+        <p class="text-gray-600">施工案件を掲載します。グループメンバーのみに公開されます。</p>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="flex gap-4">
+      <div class="flex-shrink-0 w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
+        3
+      </div>
+      <div class="flex-1">
+        <h3 class="font-bold text-lg mb-2">応募・マッチング</h3>
+        <p class="text-gray-600">案件に応募したり、応募者を承認してマッチングします。詳細住所は承認後に表示されます。</p>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="flex gap-4">
+      <div class="flex-shrink-0 w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
+        4
+      </div>
+      <div class="flex-1">
+        <h3 class="font-bold text-lg mb-2">施工・完了</h3>
+        <p class="text-gray-600">マッチングが成立したら、施工を行い案件を完了します。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center mt-8">
+    <% if user_signed_in? %>
+      <%= link_to "グループを作成する", new_group_path, class: "bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-bold inline-block" %>
     <% else %>
-      <p class="text-gray-500 text-center py-8">現在、公開中の案件はありません</p>
+      <%= link_to "今すぐ始める", new_user_registration_path, class: "bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-bold inline-block" %>
     <% end %>
   </div>
-<% end %>
+</div>
 

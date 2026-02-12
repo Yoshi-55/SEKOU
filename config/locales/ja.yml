@@ -1,0 +1,91 @@
+ja:
+  date:
+    formats:
+      default: "%Y/%m/%d"
+      short: "%m/%d"
+      long: "%Y年%m月%d日"
+  time:
+    formats:
+      default: "%Y/%m/%d %H:%M"
+      short: "%m/%d %H:%M"
+      long: "%Y年%m月%d日 %H時%M分"
+
+  activerecord:
+    models:
+      user: ユーザー
+      job: 案件
+      apply: 応募
+      group: グループ
+      group_membership: グループメンバーシップ
+    attributes:
+      user:
+        email: メールアドレス
+        password: パスワード
+        password_confirmation: パスワード（確認）
+        name: 氏名
+        company_name: 会社名
+        company_address: 会社住所
+        prefecture: 都道府県
+        phone: 電話番号
+        bio: 自己紹介
+        skills: スキル・資格
+        years_of_experience: 経験年数
+        current_password: 現在のパスワード
+      job:
+        title: タイトル
+        description: 案件詳細
+        job_type: 案件種別
+        location: 地域
+        address: 詳細住所
+        budget: 日当
+        scheduled_date: 作業予定日
+        required_people: 必要人数
+        status: ステータス
+        group_id: グループ
+        published_at: 公開日時
+        expires_at: 掲載期限
+      apply:
+        message: メッセージ
+        status: ステータス
+        applied_at: 応募日時
+        responded_at: 回答日時
+      group:
+        name: グループ名
+        description: グループの説明
+      group_membership:
+        role: 役割
+
+    errors:
+      messages:
+        record_invalid: "バリデーションに失敗しました: %{errors}"
+        restrict_dependent_destroy:
+          has_one: "%{record}が存在するため削除できません"
+          has_many: "%{record}が存在するため削除できません"
+
+  errors:
+    format: "%{attribute}%{message}"
+    messages:
+      accepted: "を受け入れてください"
+      blank: "を入力してください"
+      confirmation: "と%{attribute}の入力が一致しません"
+      empty: "を入力してください"
+      equal_to: "は%{count}にしてください"
+      even: "は偶数にしてください"
+      exclusion: "は予約されています"
+      greater_than: "は%{count}より大きい値にしてください"
+      greater_than_or_equal_to: "は%{count}以上の値にしてください"
+      inclusion: "は一覧にありません"
+      invalid: "は不正な値です"
+      less_than: "は%{count}より小さい値にしてください"
+      less_than_or_equal_to: "は%{count}以下の値にしてください"
+      model_invalid: "バリデーションに失敗しました: %{errors}"
+      not_a_number: "は数値で入力してください"
+      not_an_integer: "は整数で入力してください"
+      odd: "は奇数にしてください"
+      other_than: "は%{count}以外の値にしてください"
+      present: "は入力しないでください"
+      required: "を入力してください"
+      taken: "はすでに存在します"
+      too_long: "は%{count}文字以内で入力してください"
+      too_short: "は%{count}文字以上で入力してください"
+      wrong_length: "は%{count}文字で入力してください"

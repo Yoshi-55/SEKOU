@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   devise_for :users
 
   root 'pages#home'
+  get 'terms', to: 'pages#terms', as: :terms
+  get 'privacy', to: 'pages#privacy', as: :privacy
+  get 'company', to: 'pages#company', as: :company
 
   # プロフィール
   resource :profile, only: %i[show edit update], controller: 'users'

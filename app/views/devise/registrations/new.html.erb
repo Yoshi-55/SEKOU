@@ -1,37 +1,37 @@
 <div class="max-w-md mx-auto">
-  <div class="bg-white rounded-lg shadow p-8">
-    <h2 class="text-2xl font-bold mb-6 text-center">新規登録</h2>
+  <div class="bg-white rounded-lg shadow p-6 md:p-8">
+    <h2 class="text-2xl md:text-3xl font-bold mb-6 text-center">新規登録</h2>
 
-    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "space-y-4" }) do |f| %>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "space-y-5" }) do |f| %>
       <%= render "devise/shared/error_messages", resource: resource %>
 
       <!-- Name -->
       <div>
-        <%= f.label :name, "お名前", class: "block text-sm font-medium text-gray-700 mb-1" %>
-        <%= f.text_field :name, autofocus: true, class: "w-full border border-gray-300 rounded px-4 py-2", placeholder: "山田 太郎", required: true %>
+        <%= f.label :name, "お名前", class: "block font-bold text-gray-700 mb-2" %>
+        <%= f.text_field :name, autofocus: true, class: "w-full border-2 border-gray-300 rounded-lg px-4 py-3 text-base focus:border-blue-500 focus:outline-none", placeholder: "山田 太郎", required: true %>
       </div>
 
       <!-- Email -->
       <div>
-        <%= f.label :email, "メールアドレス", class: "block text-sm font-medium text-gray-700 mb-1" %>
-        <%= f.email_field :email, autocomplete: "email", class: "w-full border border-gray-300 rounded px-4 py-2", placeholder: "example@example.com", required: true %>
+        <%= f.label :email, "メールアドレス", class: "block font-bold text-gray-700 mb-2" %>
+        <%= f.email_field :email, autocomplete: "email", class: "w-full border-2 border-gray-300 rounded-lg px-4 py-3 text-base focus:border-blue-500 focus:outline-none", placeholder: "example@example.com", required: true %>
       </div>
 
       <!-- Phone -->
       <div>
-        <%= f.label :phone, "電話番号", class: "block text-sm font-medium text-gray-700 mb-1" %>
-        <%= f.telephone_field :phone, class: "w-full border border-gray-300 rounded px-4 py-2", placeholder: "090-1234-5678", required: true %>
+        <%= f.label :phone, "電話番号", class: "block font-bold text-gray-700 mb-2" %>
+        <%= f.telephone_field :phone, class: "w-full border-2 border-gray-300 rounded-lg px-4 py-3 text-base focus:border-blue-500 focus:outline-none", placeholder: "090-1234-5678", required: true %>
       </div>
 
       <!-- Company Name (共通) -->
       <div>
-        <%= f.label :company_name, "会社名", class: "block text-sm font-medium text-gray-700 mb-1" %>
-        <%= f.text_field :company_name, class: "w-full border border-gray-300 rounded px-4 py-2", placeholder: "株式会社〇〇", required: true %>
+        <%= f.label :company_name, "会社名", class: "block font-bold text-gray-700 mb-2" %>
+        <%= f.text_field :company_name, class: "w-full border-2 border-gray-300 rounded-lg px-4 py-3 text-base focus:border-blue-500 focus:outline-none", placeholder: "株式会社〇〇", required: true %>
       </div>
 
       <!-- Prefecture (共通) -->
       <div>
-        <%= f.label :prefecture, "都道府県", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.label :prefecture, "都道府県", class: "block font-bold text-gray-700 mb-2" %>
         <%= f.select :prefecture,
           [
             ["東京都", "東京都"],
@@ -44,28 +44,28 @@
             ["その他", "その他"]
           ],
           { include_blank: "選択してください" },
-          class: "w-full border border-gray-300 rounded px-4 py-2",
+          class: "w-full border-2 border-gray-300 rounded-lg px-4 py-3 text-base focus:border-blue-500 focus:outline-none",
           required: true %>
       </div>
 
       <!-- Password -->
       <div>
-        <%= f.label :password, "パスワード", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.label :password, "パスワード", class: "block font-bold text-gray-700 mb-2" %>
         <% if @minimum_password_length %>
           <p class="text-sm text-gray-500 mb-1">（<%= @minimum_password_length %>文字以上）</p>
         <% end %>
-        <%= f.password_field :password, autocomplete: "new-password", class: "w-full border border-gray-300 rounded px-4 py-2", required: true %>
+        <%= f.password_field :password, autocomplete: "new-password", class: "w-full border-2 border-gray-300 rounded-lg px-4 py-3 text-base focus:border-blue-500 focus:outline-none", required: true %>
       </div>
 
       <!-- Password Confirmation -->
       <div>
-        <%= f.label :password_confirmation, "パスワード（確認）", class: "block text-sm font-medium text-gray-700 mb-1" %>
-        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "w-full border border-gray-300 rounded px-4 py-2", required: true %>
+        <%= f.label :password_confirmation, "パスワード（確認）", class: "block font-bold text-gray-700 mb-2" %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "w-full border-2 border-gray-300 rounded-lg px-4 py-3 text-base focus:border-blue-500 focus:outline-none", required: true %>
       </div>
 
       <!-- Submit -->
-      <div>
-        <%= f.submit "登録する", class: "w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-bold cursor-pointer" %>
+      <div class="pt-2">
+        <%= f.submit "登録する", class: "w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-4 rounded-xl font-bold cursor-pointer text-lg" %>
       </div>
     <% end %>
 

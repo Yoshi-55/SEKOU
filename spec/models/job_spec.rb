@@ -16,7 +16,7 @@ RSpec.describe Job, type: :model do
   end
 
   it '予算が5000円単位なら有効であること' do
-    expect(build(:job, budget: 25_000)).to be_valid
+    expect(create(:job, budget: 25_000)).to be_valid
   end
 
   it 'job_type_labelが日本語を返すこと' do

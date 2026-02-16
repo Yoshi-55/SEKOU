@@ -1,80 +1,77 @@
 <div class="max-w-4xl mx-auto">
-  <div class="mb-6">
-    <h1 class="text-3xl font-bold mb-2">応募詳細</h1>
-    <div class="flex items-center gap-3">
-      <% if @apply.pending? %>
-        <span class="bg-yellow-100 text-yellow-800 text-sm px-3 py-1 rounded-full font-medium">審査中</span>
-      <% elsif @apply.accepted? %>
-        <span class="bg-green-500 text-white text-sm px-3 py-1 rounded-full font-medium">承認済み</span>
-      <% elsif @apply.rejected? %>
-        <span class="bg-red-500 text-white text-sm px-3 py-1 rounded-full font-medium">不採用</span>
-      <% elsif @apply.cancelled? %>
-        <span class="bg-gray-500 text-white text-sm px-3 py-1 rounded-full font-medium">キャンセル</span>
-      <% end %>
-    </div>
+  <!-- Header -->
+  <div class="mb-4 flex items-center gap-3">
+    <h1 class="text-3xl font-bold">応募詳細</h1>
+    <% if @apply.pending? %>
+      <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full font-medium">審査中</span>
+    <% elsif @apply.accepted? %>
+      <span class="bg-green-500 text-white text-xs px-2 py-1 rounded-full font-medium">承認済み</span>
+    <% elsif @apply.rejected? %>
+      <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full font-medium">不採用</span>
+    <% elsif @apply.cancelled? %>
+      <span class="bg-gray-400 text-white text-xs px-2 py-1 rounded-full font-medium">キャンセル</span>
+    <% end %>
   </div>
 
   <!-- Job Information -->
-  <div class="bg-white rounded-lg shadow p-6 mb-6">
-    <h2 class="text-xl font-bold mb-4">案件情報</h2>
-    <div class="mb-4">
-      <%= link_to @apply.job.title, job_path(@apply.job), class: "text-2xl font-bold text-blue-600 hover:underline" %>
-    </div>
+  <div class="bg-white rounded-xl shadow border border-gray-100 p-4 mb-4">
+    <h2 class="text-base font-bold mb-3 text-gray-700">案件情報</h2>
+    <%= link_to @apply.job.title, job_path(@apply.job), class: "text-base font-bold text-blue-600 hover:underline leading-snug block mb-3" %>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-gray-50 rounded">
+    <div class="grid grid-cols-2 gap-3 p-3 bg-gray-50 rounded-xl">
       <div>
-        <p class="text-sm text-gray-600 mb-1">案件種別</p>
-        <p class="font-bold"><%= @apply.job.job_type %></p>
+        <p class="text-xs text-gray-400 mb-0.5">案件種別</p>
+        <p class="font-medium text-sm"><%= @apply.job.job_type_label %></p>
       </div>
       <div>
-        <p class="text-sm text-gray-600 mb-1">場所</p>
-        <p class="font-bold">📍 <%= @apply.job.location %></p>
+        <p class="text-xs text-gray-400 mb-0.5">場所</p>
+        <p class="font-medium text-sm">📍 <%= @apply.job.location %></p>
       </div>
       <div>
-        <p class="text-sm text-gray-600 mb-1">予算</p>
-        <p class="font-bold text-blue-600"><%= number_to_currency(@apply.job.budget, unit: "¥", precision: 0) %></p>
+        <p class="text-xs text-gray-400 mb-0.5">予算</p>
+        <p class="font-bold text-sm text-blue-600"><%= number_to_currency(@apply.job.budget, unit: "¥", precision: 0) %></p>
       </div>
       <div>
-        <p class="text-sm text-gray-600 mb-1">作業予定日</p>
-        <p class="font-bold"><%= l(@apply.job.scheduled_date, format: :long) %></p>
+        <p class="text-xs text-gray-400 mb-0.5">作業予定日</p>
+        <p class="font-medium text-sm"><%= l(@apply.job.scheduled_date, format: :long) %></p>
       </div>
       <% if @apply.job.address.present? %>
-        <div class="md:col-span-2">
-          <p class="text-sm text-gray-600 mb-1">詳細住所</p>
-          <p class="font-bold"><%= @apply.job.address %></p>
+        <div class="col-span-2">
+          <p class="text-xs text-gray-400 mb-0.5">詳細住所</p>
+          <p class="font-medium text-sm"><%= @apply.job.address %></p>
         </div>
       <% end %>
     </div>
   </div>
 
   <!-- Application Details -->
-  <div class="bg-white rounded-lg shadow p-6 mb-6">
-    <h2 class="text-xl font-bold mb-4">応募内容</h2>
+  <div class="bg-white rounded-xl shadow border border-gray-100 p-4 mb-4">
+    <h2 class="text-base font-bold mb-3 text-gray-700">応募内容</h2>
 
-    <div class="space-y-4">
+    <div class="space-y-3">
       <div>
-        <p class="text-sm text-gray-600 mb-1">応募日時</p>
-        <p class="font-medium"><%= l(@apply.applied_at, format: :long) %></p>
+        <p class="text-xs text-gray-400 mb-0.5">応募日時</p>
+        <p class="font-medium text-sm"><%= l(@apply.applied_at, format: :long) %></p>
       </div>
 
       <div>
-        <p class="text-sm text-gray-600 mb-1">応募メッセージ</p>
-        <div class="p-4 bg-gray-50 rounded">
+        <p class="text-xs text-gray-400 mb-1">応募メッセージ</p>
+        <div class="p-3 bg-gray-50 rounded-xl text-sm leading-relaxed text-gray-700">
           <%= simple_format(@apply.message) %>
         </div>
       </div>
 
       <% if @apply.desired_budget.present? %>
         <div>
-          <p class="text-sm text-gray-600 mb-1">希望予算</p>
-          <p class="font-bold text-blue-600"><%= number_to_currency(@apply.desired_budget, unit: "¥", precision: 0) %></p>
+          <p class="text-xs text-gray-400 mb-0.5">希望予算</p>
+          <p class="font-bold text-sm text-blue-600"><%= number_to_currency(@apply.desired_budget, unit: "¥", precision: 0) %></p>
         </div>
       <% end %>
 
       <% if @apply.available_date.present? %>
         <div>
-          <p class="text-sm text-gray-600 mb-1">対応可能日</p>
-          <p class="font-bold"><%= l(@apply.available_date, format: :long) %></p>
+          <p class="text-xs text-gray-400 mb-0.5">対応可能日</p>
+          <p class="font-medium text-sm"><%= l(@apply.available_date, format: :long) %></p>
         </div>
       <% end %>
     </div>
@@ -82,21 +79,39 @@
 
   <!-- Applicant Info (for Job Owner) -->
   <% if @apply.job.client == current_user %>
-    <div class="bg-white rounded-lg shadow p-6 mb-6">
-      <h2 class="text-xl font-bold mb-4">応募者情報</h2>
+    <div class="bg-white rounded-xl shadow border border-gray-100 p-4 mb-4">
+      <h2 class="text-base font-bold mb-3 text-gray-700">応募者情報</h2>
       <div class="space-y-2">
-        <p><span class="text-gray-600">名前:</span> <span class="font-bold"><%= @apply.craftsman.name %></span></p>
-        <p><span class="text-gray-600">会社名:</span> <span class="font-bold"><%= @apply.craftsman.company_name %></span></p>
-        <p><span class="text-gray-600">都道府県:</span> <span class="font-bold"><%= @apply.craftsman.prefecture %></span></p>
-        <p><span class="text-gray-600">電話番号:</span> <span class="font-bold"><%= @apply.craftsman.phone %></span></p>
-        <p><span class="text-gray-600">メール:</span> <span class="font-bold"><%= @apply.craftsman.email %></span></p>
+        <div class="grid grid-cols-2 gap-2">
+          <span class="text-xs text-gray-400">名前</span>
+          <span class="font-medium text-sm"><%= @apply.craftsman.name %></span>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <span class="text-xs text-gray-400">会社名</span>
+          <span class="font-medium text-sm"><%= @apply.craftsman.company_name %></span>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <span class="text-xs text-gray-400">都道府県</span>
+          <span class="font-medium text-sm"><%= @apply.craftsman.prefecture %></span>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <span class="text-xs text-gray-400">電話番号</span>
+          <span class="font-medium text-sm"><%= @apply.craftsman.phone %></span>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <span class="text-xs text-gray-400">メール</span>
+          <span class="font-medium text-sm break-all"><%= @apply.craftsman.email %></span>
+        </div>
         <% if @apply.craftsman.years_of_experience.present? %>
-          <p><span class="text-gray-600">経験年数:</span> <span class="font-bold"><%= @apply.craftsman.years_of_experience %>年</span></p>
+          <div class="grid grid-cols-2 gap-2">
+            <span class="text-xs text-gray-400">経験年数</span>
+            <span class="font-medium text-sm"><%= @apply.craftsman.years_of_experience %>年</span>
+          </div>
         <% end %>
         <% if @apply.craftsman.bio.present? %>
-          <div class="mt-4">
-            <p class="text-gray-600 mb-1">自己紹介:</p>
-            <div class="p-4 bg-gray-50 rounded">
+          <div>
+            <p class="text-xs text-gray-400 mb-1">自己紹介</p>
+            <div class="p-3 bg-gray-50 rounded-xl text-sm leading-relaxed text-gray-700">
               <%= simple_format(@apply.craftsman.bio) %>
             </div>
           </div>
@@ -107,24 +122,23 @@
 
   <!-- Response Status -->
   <% if @apply.responded_at.present? %>
-    <div class="bg-white rounded-lg shadow p-6 mb-6">
-      <h2 class="text-xl font-bold mb-4">回答情報</h2>
-      <p class="text-gray-600">回答日: <span class="font-bold"><%= l(@apply.responded_at, format: :long) %></span></p>
+    <div class="bg-white rounded-xl shadow border border-gray-100 p-4 mb-4">
+      <p class="text-xs text-gray-400">回答日: <span class="font-medium text-sm text-gray-700"><%= l(@apply.responded_at, format: :long) %></span></p>
     </div>
   <% end %>
 
   <!-- Actions -->
-  <div class="flex gap-4">
+  <div class="flex flex-wrap gap-2">
     <% if @apply.craftsman == current_user %>
-      <%= link_to "← 応募履歴に戻る", applies_path, class: "text-blue-600 hover:underline" %>
+      <%= link_to "← 応募履歴に戻る", applies_path, class: "text-blue-600 hover:underline text-sm" %>
       <% if @apply.pending? %>
-        <%= button_to "応募をキャンセル", cancel_apply_path(@apply), method: :patch, data: { confirm: "本当にキャンセルしますか？" }, class: "bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded font-medium" %>
+        <%= link_to "応募をキャンセル", cancel_apply_path(@apply), data: { turbo_method: :patch, turbo_confirm: "本当にキャンセルしますか？" }, class: "bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium text-sm" %>
       <% end %>
     <% elsif @apply.job.client == current_user %>
-      <%= link_to "← 案件詳細に戻る", job_path(@apply.job), class: "text-blue-600 hover:underline" %>
+      <%= link_to "← 案件詳細に戻る", job_path(@apply.job), class: "text-blue-600 hover:underline text-sm" %>
       <% if @apply.pending? %>
-        <%= button_to "承認する", accept_apply_path(@apply), method: :patch, class: "bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded font-medium" %>
-        <%= button_to "不採用", reject_apply_path(@apply), method: :patch, data: { confirm: "本当に不採用としますか？" }, class: "bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded font-medium" %>
+        <%= link_to "承認する", accept_apply_path(@apply), data: { turbo_method: :patch }, class: "bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium text-sm" %>
+        <%= link_to "不採用", reject_apply_path(@apply), data: { turbo_method: :patch, turbo_confirm: "本当に不採用としますか？" }, class: "bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium text-sm" %>
       <% end %>
     <% end %>
   </div>

@@ -37,8 +37,8 @@
 
       <!-- Submit -->
       <div class="flex gap-4">
-        <%= f.submit "応募する", class: "flex-1 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-bold cursor-pointer" %>
-        <%= link_to "キャンセル", job_path(@job), class: "px-8 py-3 rounded-lg font-medium text-gray-700 hover:bg-gray-100" %>
+        <%= button_tag "応募する", type: "submit", class: "flex-1 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-bold" %>
+        <%= link_to "キャンセル", job_path(@job), class: "inline-flex items-center px-8 py-3 rounded-lg font-medium text-gray-700 hover:bg-gray-100" %>
       </div>
     <% end %>
   </div>

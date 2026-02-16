@@ -102,7 +102,9 @@
 
   <!-- Actions -->
   <div class="flex gap-4">
-    <%= button_tag "案件を掲載する", type: "submit", class: "flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium text-sm" %>
+    <%= button_tag "案件を掲載する", type: "submit",
+          disabled: current_user.groups.empty?,
+          class: "flex-1 px-4 py-2 rounded-lg font-medium text-sm #{ current_user.groups.empty? ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 text-white' }" %>
     <%= link_to "キャンセル", jobs_path, class: "inline-flex items-center px-4 py-2 rounded-lg font-medium text-sm text-gray-700 hover:bg-gray-100" %>
   </div>
 <% end %>

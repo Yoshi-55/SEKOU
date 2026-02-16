@@ -41,12 +41,16 @@ class JobsController < ApplicationController
 
   def show
     # グループメンバーのみアクセス可能
-    unless user_signed_in? && (@job.group.members.include?(current_user) || @job.client == current_user)
+    unless user_signed_in? && (@job.client == current_user || @job.group.member_ids.include?(current_user.id))
       redirect_to root_path, alert: 'この案件にアクセスする権限がありません。'
       return
     end
 
-    @applies = @job.applies.includes(:craftsman) if user_signed_in? && @job.client == current_user
+    if user_signed_in? && @job.client == current_user
+      @applies = @job.applies.includes(:craftsman)
+    elsif user_signed_in?
+      @accepted = @job.applies.accepted.exists?(craftsman: current_user)
+    end
   end
 
   def posted
@@ -92,7 +96,7 @@ class JobsController < ApplicationController
       redirect_to @job, alert: '承認済みの応募がある案件は削除できません。'
     else
       @job.destroy
-      redirect_to root_path, notice: '案件を削除しました。'
+      redirect_to posted_jobs_path, notice: '案件を削除しました。'
     end
   end
 

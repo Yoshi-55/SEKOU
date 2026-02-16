@@ -45,7 +45,12 @@ class GroupsController < ApplicationController
   end
 
   def add_member
-    user = User.find_by(email: params[:email])
+    if params[:email].blank?
+      redirect_to @group, alert: 'メールアドレスを入力してください。'
+      return
+    end
+
+    user = User.find_by(email: params[:email].strip)
 
     if user.nil?
       redirect_to @group, alert: 'ユーザーが見つかりませんでした。'

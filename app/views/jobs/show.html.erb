@@ -42,7 +42,7 @@
       <% if @job.address.present? %>
         <div class="col-span-2">
           <p class="text-xs text-gray-400 mb-0.5">詳細住所</p>
-          <% if user_signed_in? && (@job.client == current_user || @job.applies.accepted.exists?(craftsman: current_user)) %>
+          <% if user_signed_in? && (@job.client == current_user || @accepted) %>
             <p class="font-medium text-sm"><%= @job.address %></p>
           <% else %>
             <p class="text-xs text-gray-400 italic">応募承認後に表示されます</p>

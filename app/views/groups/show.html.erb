@@ -51,7 +51,7 @@
     <div class="mt-4 pt-4 border-t border-gray-100">
       <h3 class="font-bold text-sm mb-2 text-gray-700">メンバーを追加</h3>
       <%= form_with url: add_member_group_path(@group), method: :post, class: "flex gap-2" do |f| %>
-        <%= text_field_tag :email, nil, placeholder: "追加するユーザーのメールアドレス", class: "flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm" %>
+        <%= email_field_tag :email, nil, placeholder: "追加するユーザーのメールアドレス", required: true, class: "flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm" %>
         <%= button_tag "追加", class: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium text-sm" %>
       <% end %>
     </div>

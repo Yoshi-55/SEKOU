@@ -38,12 +38,12 @@
         <p class="text-sm text-gray-500 mt-1">※作業内容、必要な技術、注意事項などを詳しく記入してください</p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 gap-4">
         <div>
           <%= f.label :job_type, "案件種別", class: "block text-sm font-medium text-gray-700 mb-1" %>
           <%= f.select :job_type,
             [
-              ["カーラッピング", "car_wrapping"],
+              ["カーラッピング施工", "car_wrapping"],
               ["フリート施工", "fleet"],
               ["PPF施工", "ppf"],
               ["その他", "other"]
@@ -81,7 +81,7 @@
   <div class="border-b pb-6">
     <h2 class="text-xl font-bold mb-4">条件</h2>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 gap-4">
       <div>
         <%= f.label :budget, "日当（円）", class: "block text-sm font-medium text-gray-700 mb-1" %>
         <%= f.number_field :budget, class: "w-full border border-gray-300 rounded px-4 py-2", placeholder: "25000", min: 5000, step: 5000 %>
@@ -102,7 +102,7 @@
 
   <!-- Actions -->
   <div class="flex gap-4">
-    <%= f.submit "案件を掲載する", class: "flex-1 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-bold cursor-pointer" %>
-    <%= link_to "キャンセル", jobs_path, class: "px-8 py-3 rounded-lg font-medium text-gray-700 hover:bg-gray-100" %>
+    <%= button_tag "案件を掲載する", type: "submit", class: "flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium text-sm" %>
+    <%= link_to "キャンセル", jobs_path, class: "inline-flex items-center px-4 py-2 rounded-lg font-medium text-sm text-gray-700 hover:bg-gray-100" %>
   </div>
 <% end %>

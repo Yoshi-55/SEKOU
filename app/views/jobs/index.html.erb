@@ -1,40 +1,41 @@
 <% if !user_signed_in? || current_user.groups.empty? %>
   <!-- グループ未所属の場合のメッセージ -->
-  <div class="bg-white rounded-lg shadow p-12 text-center">
+  <div class="max-w-4xl mx-auto bg-white rounded-lg shadow p-12 text-center">
     <% if !user_signed_in? %>
-      <h2 class="text-2xl font-bold mb-4">案件を閲覧するにはログインが必要です</h2>
+      <h2 class="text-3xl font-bold mb-4">案件を閲覧するにはログインが必要です</h2>
       <p class="text-gray-600 mb-6">このプラットフォームはグループメンバー限定で案件を共有するサービスです。</p>
-      <%= link_to "ログイン", new_user_session_path, class: "bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg inline-block font-medium mr-2" %>
-      <%= link_to "新規登録", new_user_registration_path, class: "bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-3 rounded-lg inline-block font-medium" %>
+      <%= link_to "ログイン", new_user_session_path, class: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg inline-block font-medium text-sm mr-2" %>
+      <%= link_to "新規登録", new_user_registration_path, class: "bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg inline-block font-medium text-sm" %>
     <% else %>
-      <h2 class="text-2xl font-bold mb-4">グループに参加してください</h2>
+      <h2 class="text-3xl font-bold mb-4">グループに参加してください</h2>
       <p class="text-gray-600 mb-6">案件を閲覧するには、グループを作成するか、既存のグループに参加する必要があります。</p>
-      <%= link_to "グループを作成する", new_group_path, class: "bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg inline-block font-medium" %>
+      <%= link_to "グループを作成する", new_group_path, class: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg inline-block font-medium text-sm" %>
     <% end %>
   </div>
 <% else %>
-  <div class="mb-4 md:mb-6">
-    <h1 class="text-2xl md:text-3xl font-bold mb-2">案件一覧</h1>
+<div class="max-w-4xl mx-auto">
+  <div class="mb-4">
+    <h1 class="text-3xl font-bold mb-2">案件一覧</h1>
     <p class="text-gray-600">カーラッピング・フリート施工案件を探す</p>
   </div>
 
   <!-- Filter and Sort Section -->
-  <div class="bg-white rounded-lg shadow p-4 md:p-6 mb-4 md:mb-6">
-    <%= form_with url: jobs_path, method: :get, class: "space-y-4" do |f| %>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+  <div class="bg-white rounded-lg shadow p-4 mb-4">
+    <%= form_with url: jobs_path, method: :get, class: "space-y-3" do |f| %>
+      <div class="grid grid-cols-2 gap-3">
         <!-- Job Type Filter -->
         <div>
           <%= f.label :job_type, "案件種別", class: "block text-sm font-medium text-gray-700 mb-1" %>
           <%= f.select :job_type,
             options_for_select([
               ["すべて", ""],
-              ["カーラッピング", "car_wrapping"],
+              ["カーラッピング施工", "car_wrapping"],
               ["フリート施工", "fleet"],
               ["PPF施工", "ppf"],
               ["その他", "other"]
             ], params[:job_type]),
             {},
-            class: "w-full border border-gray-300 rounded px-3 py-2" %>
+            class: "w-full border border-gray-300 rounded px-3 py-2 text-sm" %>
         </div>
 
         <!-- Location Filter -->
@@ -53,31 +54,11 @@
               ["その他", "その他"]
             ], params[:location]),
             {},
-            class: "w-full border border-gray-300 rounded px-3 py-2" %>
+            class: "w-full border border-gray-300 rounded px-3 py-2 text-sm" %>
         </div>
 
-        <!-- Min Budget Filter -->
-        <div>
-          <%= f.label :min_budget, "最低予算", class: "block text-sm font-medium text-gray-700 mb-1" %>
-          <%= f.number_field :min_budget,
-            value: params[:min_budget],
-            placeholder: "例: 50000",
-            class: "w-full border border-gray-300 rounded px-3 py-2" %>
-        </div>
-
-        <!-- Max Budget Filter -->
-        <div>
-          <%= f.label :max_budget, "最高予算", class: "block text-sm font-medium text-gray-700 mb-1" %>
-          <%= f.number_field :max_budget,
-            value: params[:max_budget],
-            placeholder: "例: 200000",
-            class: "w-full border border-gray-300 rounded px-3 py-2" %>
-        </div>
-      </div>
-
-      <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
         <!-- Sort -->
-        <div class="flex-1">
+        <div class="col-span-2">
           <%= f.label :sort, "並び替え", class: "block text-sm font-medium text-gray-700 mb-1" %>
           <%= f.select :sort,
             options_for_select([
@@ -87,14 +68,14 @@
               ["作業日が近い順", "date"]
             ], params[:sort]),
             {},
-            class: "w-full border border-gray-300 rounded px-3 py-2" %>
+            class: "w-full border border-gray-300 rounded px-3 py-2 text-sm" %>
         </div>
+      </div>
 
-        <!-- Submit Buttons -->
-        <div class="flex items-end gap-2">
-          <%= f.submit "検索", class: "bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg cursor-pointer font-bold text-base" %>
-          <%= link_to "クリア", jobs_path, class: "bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-3 rounded-lg font-bold text-base" %>
-        </div>
+      <!-- Submit Buttons -->
+      <div class="flex gap-2">
+        <a href="#" onclick="this.closest('form').submit(); return false;" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium text-sm">検索</a>
+        <%= link_to "クリア", jobs_path, class: "inline-flex items-center bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg font-medium text-sm" %>
       </div>
     <% end %>
   </div>
@@ -104,37 +85,26 @@
     <div class="space-y-4 mb-6">
       <% @jobs.each do |job| %>
         <%= link_to job_path(job), class: "block" do %>
-          <div class="bg-white rounded-lg shadow hover:shadow-lg transition p-4 md:p-6">
+          <div class="bg-white rounded-xl shadow hover:shadow-lg transition-all border border-gray-100 hover:border-blue-200 p-4">
             <div class="flex-1">
-              <!-- Title -->
-              <h3 class="font-bold text-lg md:text-xl text-gray-900 mb-2"><%= job.title %></h3>
-
-              <!-- Description -->
-              <p class="text-gray-600 mb-3 text-sm md:text-base"><%= truncate(job.description, length: 100) %></p>
-
-              <!-- Job Details -->
-              <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 text-sm">
-                <div class="flex items-center gap-1 text-gray-700">
-                  <span class="font-medium">種別:</span>
-                  <span class="truncate"><%= job.job_type %></span>
-                </div>
-                <div class="flex items-center gap-1 text-gray-700">
-                  <span>📍</span>
-                  <span class="truncate"><%= job.location %></span>
-                </div>
-                <div class="flex items-center gap-1 text-gray-700">
-                  <span>💰</span>
-                  <span class="font-bold text-blue-600"><%= number_to_currency(job.budget, unit: "¥", precision: 0) %></span>
-                </div>
-                <div class="flex items-center gap-1 text-gray-700">
-                  <span>📅</span>
-                  <span><%= l(job.scheduled_date, format: :short) %></span>
-                </div>
+              <!-- Title + Badge -->
+              <div class="flex items-start justify-between gap-2 mb-2">
+                <h3 class="font-bold text-lg text-gray-900 leading-snug"><%= job.title %></h3>
+                <span class="shrink-0 text-xs bg-blue-50 text-blue-700 border border-blue-200 px-2 py-1 rounded-full font-medium"><%= job.job_type_label %></span>
               </div>
 
-              <!-- Additional Info -->
-              <div class="mt-2 text-xs md:text-sm text-gray-500">
-                <span>必要人数: <%= job.required_people %>名</span>
+              <!-- Description -->
+              <p class="text-gray-500 mb-3 text-sm leading-relaxed"><%= truncate(job.description, length: 80) %></p>
+
+              <!-- Divider -->
+              <div class="border-t border-gray-100 pt-3">
+                <!-- Key Info Row -->
+                <div class="flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-600">
+                  <span class="flex items-center gap-1">📍 <%= job.location %></span>
+                  <span class="flex items-center gap-1 font-bold text-blue-600"><%= number_to_currency(job.budget, unit: "¥", precision: 0) %></span>
+                  <span class="flex items-center gap-1">📅 <%= l(job.scheduled_date, format: :short) %></span>
+                  <span class="flex items-center gap-1 text-gray-400">👤 <%= job.required_people %>名</span>
+                </div>
               </div>
             </div>
           </div>
@@ -152,4 +122,5 @@
       <%= link_to "フィルターをクリア", jobs_path, class: "text-blue-600 hover:underline" %>
     </div>
   <% end %>
+</div>
 <% end %>

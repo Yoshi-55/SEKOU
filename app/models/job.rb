@@ -43,6 +43,17 @@ class Job < ApplicationRecord
     update!(status: :closed)
   end
 
+  JOB_TYPE_LABELS = {
+    'car_wrapping' => 'カーラッピング施工',
+    'fleet'        => 'フリート施工',
+    'ppf'          => 'PPF施工',
+    'other'        => 'その他'
+  }.freeze
+
+  def job_type_label
+    JOB_TYPE_LABELS[job_type] || job_type
+  end
+
   private
 
   def budget_must_be_multiple_of_5000

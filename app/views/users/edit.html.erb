@@ -1,5 +1,7 @@
 <div class="max-w-4xl mx-auto">
-  <h1 class="text-3xl font-bold mb-6">プロフィール編集</h1>
+  <div class="mb-4">
+    <h1 class="text-3xl font-bold mb-1">プロフィール編集</h1>
+  </div>
 
   <%= form_with(model: @user, url: profile_path, method: :patch, local: true, class: "space-y-6") do |f| %>
     <% if @user.errors.any? %>
@@ -86,8 +88,8 @@
 
     <!-- アクション -->
     <div class="flex gap-4">
-      <%= f.submit "更新する", class: "flex-1 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-bold cursor-pointer" %>
-      <%= link_to "キャンセル", profile_path, class: "px-8 py-3 rounded-lg font-medium text-gray-700 hover:bg-gray-100 border border-gray-300" %>
+      <%= button_tag "更新する", type: "submit", class: "flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium text-sm" %>
+      <%= link_to "キャンセル", profile_path, class: "inline-flex items-center px-4 py-2 rounded-lg font-medium text-sm text-gray-700 hover:bg-gray-100 border border-gray-300" %>
     </div>
   <% end %>
 </div>

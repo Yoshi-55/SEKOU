@@ -3,45 +3,16 @@
 require 'rails_helper'
 
 RSpec.describe 'Applies', type: :request do
-  describe 'GET /index' do
-    it 'returns http success' do
-      get '/applies/index'
-      expect(response).to have_http_status(:success)
-    end
+  let(:craftsman) { create(:user) }
+
+  it 'GET /applies 未ログインならログインページにリダイレクトされること' do
+    get applies_path
+    expect(response).to redirect_to(new_user_session_path)
   end
 
-  describe 'GET /show' do
-    it 'returns http success' do
-      get '/applies/show'
-      expect(response).to have_http_status(:success)
-    end
-  end
-
-  describe 'GET /create' do
-    it 'returns http success' do
-      get '/applies/create'
-      expect(response).to have_http_status(:success)
-    end
-  end
-
-  describe 'GET /accept' do
-    it 'returns http success' do
-      get '/applies/accept'
-      expect(response).to have_http_status(:success)
-    end
-  end
-
-  describe 'GET /reject' do
-    it 'returns http success' do
-      get '/applies/reject'
-      expect(response).to have_http_status(:success)
-    end
-  end
-
-  describe 'GET /cancel' do
-    it 'returns http success' do
-      get '/applies/cancel'
-      expect(response).to have_http_status(:success)
-    end
+  it 'GET /applies ログイン済みなら表示されること' do
+    sign_in craftsman
+    get applies_path
+    expect(response).to have_http_status(:ok)
   end
 end

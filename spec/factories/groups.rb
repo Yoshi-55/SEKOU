@@ -2,8 +2,8 @@
 
 FactoryBot.define do
   factory :group do
-    name { 'MyString' }
-    owner_id { 1 }
-    description { 'MyText' }
+    sequence(:name) { |n| "グループ#{n}" }
+    description { 'テスト用グループです' }
+    association :owner, factory: :user
   end
 end

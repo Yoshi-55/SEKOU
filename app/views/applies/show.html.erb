@@ -61,19 +61,6 @@
         </div>
       </div>
 
-      <% if @apply.desired_budget.present? %>
-        <div>
-          <p class="text-xs text-gray-400 mb-0.5">希望予算</p>
-          <p class="font-bold text-sm text-blue-600"><%= number_to_currency(@apply.desired_budget, unit: "¥", precision: 0) %></p>
-        </div>
-      <% end %>
-
-      <% if @apply.available_date.present? %>
-        <div>
-          <p class="text-xs text-gray-400 mb-0.5">対応可能日</p>
-          <p class="font-medium text-sm"><%= l(@apply.available_date, format: :long) %></p>
-        </div>
-      <% end %>
     </div>
   </div>
 

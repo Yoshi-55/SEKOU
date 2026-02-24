@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class Job < ApplicationRecord
+  # Serialization
+  serialize :notified_member_ids, coder: JSON
+
   # Associations
   belongs_to :client, class_name: 'User'
   belongs_to :group
@@ -21,7 +24,8 @@ class Job < ApplicationRecord
   validates :location, presence: true
   validates :budget, presence: true, numericality: { greater_than: 0 }
   validate :budget_must_be_multiple_of_5000
-  validates :scheduled_date, presence: true
+  validates :start_date, presence: true
+  validate :end_date_must_be_after_start_date
   validates :required_people, presence: true, numericality: { greater_than: 0 }
   validates :group_id, presence: true
 
@@ -60,5 +64,11 @@ class Job < ApplicationRecord
     return unless budget.present? && budget % 5000 != 0
 
     errors.add(:budget, 'は5000円単位で入力してください')
+  end
+
+  def end_date_must_be_after_start_date
+    return unless start_date.present? && end_date.present? && end_date < start_date
+
+    errors.add(:end_date, 'は開始日以降の日付を指定してください')
   end
 end

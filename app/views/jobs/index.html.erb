@@ -102,7 +102,7 @@
                 <div class="flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-600">
                   <span class="flex items-center gap-1">📍 <%= job.location %></span>
                   <span class="flex items-center gap-1 font-bold text-blue-600"><%= number_to_currency(job.budget, unit: "¥", precision: 0) %></span>
-                  <span class="flex items-center gap-1">📅 <%= l(job.scheduled_date, format: :short) %></span>
+                  <span class="flex items-center gap-1">📅 <%= l(job.start_date, format: :short) %><% if job.end_date.present? && job.end_date != job.start_date %>〜<%= l(job.end_date, format: :short) %><% end %></span>
                   <span class="flex items-center gap-1 text-gray-400">👤 <%= job.required_people %>名</span>
                 </div>
               </div>

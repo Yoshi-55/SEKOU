@@ -31,7 +31,7 @@ class JobsController < ApplicationController
             when 'budget_asc'
               @jobs.order(budget: :asc)
             when 'date'
-              @jobs.order(scheduled_date: :asc)
+              @jobs.order(start_date: :asc)
             else
               @jobs.recent
             end

@@ -31,7 +31,7 @@
         <div class="flex flex-wrap gap-x-3 gap-y-1 text-xs text-gray-500 mb-3 pb-3 border-b border-gray-100">
           <span>📍 <%= apply.job.location %></span>
           <span class="font-bold text-blue-600"><%= number_to_currency(apply.job.budget, unit: "¥", precision: 0) %></span>
-          <span>📅 <%= l(apply.job.scheduled_date, format: :short) %></span>
+          <span>📅 <%= l(apply.job.start_date, format: :short) %><% if apply.job.end_date.present? && apply.job.end_date != apply.job.start_date %>〜<%= l(apply.job.end_date, format: :short) %><% end %></span>
         </div>
 
         <!-- Message -->

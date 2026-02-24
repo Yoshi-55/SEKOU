@@ -29,7 +29,12 @@
       </div>
       <div>
         <p class="text-xs text-gray-400 mb-0.5">作業予定日</p>
-        <p class="font-medium text-sm"><%= l(@job.scheduled_date, format: :long) %></p>
+        <p class="font-medium text-sm">
+          <%= l(@job.start_date, format: :long) %>
+          <% if @job.end_date.present? && @job.end_date != @job.start_date %>
+            〜 <%= l(@job.end_date, format: :long) %>
+          <% end %>
+        </p>
       </div>
       <div>
         <p class="text-xs text-gray-400 mb-0.5">必要人数</p>

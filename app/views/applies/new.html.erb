@@ -9,7 +9,7 @@
       <div class="flex gap-4 text-sm text-gray-600">
         <span>📍 <%= @job.location %></span>
         <span>💰 <%= number_to_currency(@job.budget, unit: "¥", precision: 0) %></span>
-        <span>📅 <%= l(@job.scheduled_date, format: :long) %></span>
+        <span>📅 <%= l(@job.start_date, format: :long) %><% if @job.end_date.present? && @job.end_date != @job.start_date %> 〜 <%= l(@job.end_date, format: :long) %><% end %></span>
       </div>
     </div>
   </div>

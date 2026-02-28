@@ -38,11 +38,11 @@
       <div id="notification-settings" style="display: none;">
         <%= f.label :notified_member_ids, "通知先メンバー", class: "block text-sm font-medium text-gray-700 mb-1" %>
         <div class="space-y-2 p-3 border border-gray-300 rounded bg-gray-50 max-h-60 overflow-y-auto">
-          <label class="flex items-center gap-2">
-            <%= check_box_tag "notify_all", "1", false, class: "rounded", id: "notify_all_checkbox" %>
-            <span class="text-sm font-medium">グループ全員に通知</span>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <%= check_box_tag "notify_all", "1", false, class: "w-5 h-5 rounded border-gray-300", id: "notify_all_checkbox" %>
+            <span class="text-base font-medium">グループ全員に通知</span>
           </label>
-          <div id="member-checkboxes" class="ml-6 space-y-1">
+          <div id="member-checkboxes" class="ml-6 space-y-2">
             <!-- メンバーリストはJavaScriptで動的生成 -->
           </div>
         </div>
@@ -167,17 +167,17 @@ document.addEventListener('turbo:load', function() {
     memberCheckboxesContainer.innerHTML = '';
     selectedGroup.members.forEach(member => {
       const label = document.createElement('label');
-      label.className = 'flex items-center gap-2';
+      label.className = 'flex items-center gap-2 cursor-pointer';
 
       const checkbox = document.createElement('input');
       checkbox.type = 'checkbox';
       checkbox.name = 'job[notified_member_ids][]';
       checkbox.value = member.id;
-      checkbox.className = 'rounded text-sm member-checkbox';
+      checkbox.className = 'w-5 h-5 rounded border-gray-300 member-checkbox';
       checkbox.disabled = notifyAllCheckbox.checked;
 
       const span = document.createElement('span');
-      span.className = 'text-sm';
+      span.className = 'text-base';
       span.textContent = member.name;
 
       label.appendChild(checkbox);

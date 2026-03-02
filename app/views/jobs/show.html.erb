@@ -7,6 +7,11 @@
           <span class="text-xs bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-full font-medium"><%= @job.job_type_label %></span>
         </div>
         <h1 class="text-3xl font-bold text-gray-900 leading-snug"><%= @job.title %></h1>
+        <% if @job.address.present? && user_signed_in? && (@job.client == current_user || @accepted) %>
+          <div class="mt-2">
+            <p class="text-sm text-gray-700">📍 <%= @job.address %></p>
+          </div>
+        <% end %>
         <p class="text-xs text-gray-400 mt-1">
           掲載日: <%= l(@job.published_at, format: :short) if @job.published_at %>
           <% if @job.expires_at %>| 期限: <%= l(@job.expires_at, format: :short) %><% end %>
@@ -44,16 +49,6 @@
         <p class="text-xs text-gray-400 mb-0.5">場所</p>
         <p class="font-medium text-sm">📍 <%= @job.location %></p>
       </div>
-      <% if @job.address.present? %>
-        <div class="col-span-2">
-          <p class="text-xs text-gray-400 mb-0.5">詳細住所</p>
-          <% if user_signed_in? && (@job.client == current_user || @accepted) %>
-            <p class="font-medium text-sm"><%= @job.address %></p>
-          <% else %>
-            <p class="text-xs text-gray-400 italic">応募承認後に表示されます</p>
-          <% end %>
-        </div>
-      <% end %>
     </div>
   </div>
 
@@ -95,7 +90,7 @@
       <h2 class="text-base font-bold mb-3 text-gray-700">応募者一覧 (<%= @applies.count %>件)</h2>
       <div class="space-y-3">
         <% @applies.each do |apply| %>
-          <div class="border rounded-xl p-4 <%= apply.accepted? ? 'bg-green-50 border-green-200' : 'border-gray-100' %>">
+          <div class="border rounded-xl p-3 <%= apply.accepted? ? 'bg-green-50 border-green-200' : 'border-gray-100' %>">
             <div class="flex justify-between items-start gap-2 mb-2">
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm"><%= apply.craftsman.name %></p>
@@ -103,7 +98,7 @@
               </div>
               <div class="shrink-0">
                 <% if apply.pending? %>
-                  <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full font-medium">審査中</span>
+                  <span class="bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded-full font-medium">審査中</span>
                 <% elsif apply.accepted? %>
                   <span class="bg-green-500 text-white text-xs px-2 py-1 rounded-full font-medium">承認済み</span>
                 <% elsif apply.rejected? %>

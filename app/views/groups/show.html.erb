@@ -60,13 +60,20 @@
 
 <!-- グループの案件一覧 -->
 <div class="bg-white rounded-xl shadow border border-gray-100 p-4">
-  <h2 class="text-base font-bold mb-3 text-gray-700">グループの案件 (<%= @group.jobs.count %>件)</h2>
+  <% visible_jobs_count = @group.jobs.select { |job| job.visible_to?(current_user) }.count %>
+  <h2 class="text-base font-bold mb-3 text-gray-700">グループの案件 (<%= visible_jobs_count %>件)</h2>
 
-  <% if @group.jobs.present? %>
+  <% visible_jobs = @group.jobs.recent.select { |job| job.visible_to?(current_user) }.take(5) %>
+  <% if visible_jobs.present? %>
     <div class="space-y-2">
-      <% @group.jobs.recent.limit(5).each do |job| %>
+      <% visible_jobs.each do |job| %>
         <%= link_to job_path(job), class: "block border border-gray-100 rounded-xl p-3 hover:shadow-md hover:border-blue-200 transition-all" do %>
-          <p class="font-medium text-sm text-gray-900 mb-1"><%= job.title %></p>
+          <div class="flex items-center gap-2 mb-1">
+            <p class="font-medium text-sm text-gray-900"><%= job.title %></p>
+            <% if job.applies.exists?(craftsman: current_user) %>
+              <span class="text-xs bg-green-100 text-green-700 border border-green-200 px-2 py-1 rounded-full font-medium">応募済み</span>
+            <% end %>
+          </div>
           <div class="flex gap-3 text-xs text-gray-400">
             <span>📍 <%= job.location %></span>
             <span class="font-medium text-blue-600"><%= number_to_currency(job.budget, unit: "¥", precision: 0) %></span>

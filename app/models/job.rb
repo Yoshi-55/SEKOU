@@ -58,6 +58,18 @@ class Job < ApplicationRecord
     JOB_TYPE_LABELS[job_type] || job_type
   end
 
+  # 指定ユーザーが通知対象メンバーかチェック
+  def visible_to?(user)
+    return true if client == user # 投稿者は常に表示
+    return false unless group.member_ids.include?(user.id) # グループメンバー以外は非表示
+
+    # notified_member_idsが空またはnilの場合は全員に表示
+    return true if notified_member_ids.blank?
+
+    # 指定されたメンバーのみに表示（文字列と整数の両方に対応）
+    notified_member_ids.map(&:to_i).include?(user.id)
+  end
+
   private
 
   def budget_must_be_multiple_of_5000

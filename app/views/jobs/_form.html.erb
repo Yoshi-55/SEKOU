@@ -27,7 +27,8 @@
                 id: g.id,
                 members: g.members.where.not(id: current_user.id).map { |m| { id: m.id, name: m.name } }
               }
-            }.to_json
+            }.to_json,
+            notified_member_ids: (job.notified_member_ids || []).to_json
           } %>
         <p class="text-sm text-gray-500 mt-1">※案件は選択したグループのメンバーのみに公開されます</p>
         <% if current_user.groups.empty? %>

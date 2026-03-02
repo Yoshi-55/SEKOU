@@ -36,12 +36,18 @@ class JobsController < ApplicationController
               @jobs.recent
             end
 
-    @jobs = @jobs.page(params[:page]).per(20)
+    # 通知対象メンバーのみに表示
+    if user_signed_in?
+      @jobs = @jobs.select { |job| job.visible_to?(current_user) }
+    end
+
+    # ページネーションは配列に対して実行
+    @jobs = Kaminari.paginate_array(@jobs).page(params[:page]).per(20)
   end
 
   def show
-    # グループメンバーのみアクセス可能
-    unless user_signed_in? && (@job.client == current_user || @job.group.member_ids.include?(current_user.id))
+    # 通知対象メンバーのみアクセス可能
+    unless user_signed_in? && @job.visible_to?(current_user)
       redirect_to root_path, alert: 'この案件にアクセスする権限がありません。'
       return
     end

@@ -109,7 +109,7 @@ puts "Groups created: #{Group.count}"
 # Create demo jobs
 puts 'Creating demo jobs...'
 
-# 案件1: カーラッピング（公開中、応募あり）
+# 案件1: カーラッピング（公開中、応募あり）- craftsman1のみに表示
 job1 = Job.create!(
   client: client1,
   group: group1,
@@ -119,14 +119,16 @@ job1 = Job.create!(
   location: '東京都',
   address: '渋谷区神南1-2-3 カーデザインビル1F',
   budget: 30_000,
-  scheduled_date: Date.today + 7.days,
+  start_date: Date.today + 7.days,
+  end_date: Date.today + 9.days,
   required_people: 2,
   status: :published,
   published_at: Time.current - 2.days,
-  expires_at: Time.current + 28.days
+  expires_at: Time.current + 28.days,
+  notified_member_ids: [craftsman1.id]
 )
 
-# 案件2: フリート施工（公開中）
+# 案件2: フリート施工（公開中）- craftsman2とcraftsman3に表示
 job2 = Job.create!(
   client: client1,
   group: group1,
@@ -136,14 +138,16 @@ job2 = Job.create!(
   location: '東京都',
   address: '江東区豊洲2-1-1',
   budget: 25_000,
-  scheduled_date: Date.today + 10.days,
+  start_date: Date.today + 10.days,
+  end_date: Date.today + 11.days,
   required_people: 2,
   status: :published,
   published_at: Time.current - 1.day,
-  expires_at: Time.current + 29.days
+  expires_at: Time.current + 29.days,
+  notified_member_ids: [craftsman2.id, craftsman3.id]
 )
 
-# 案件3: PPF施工（公開中）
+# 案件3: PPF施工（公開中）- 全員に表示（notified_member_ids指定なし）
 job3 = Job.create!(
   client: client2,
   group: group2,
@@ -153,14 +157,16 @@ job3 = Job.create!(
   location: '神奈川県',
   address: '横浜市西区みなとみらい2-3-4',
   budget: 35_000,
-  scheduled_date: Date.today + 5.days,
+  start_date: Date.today + 5.days,
+  end_date: Date.today + 5.days,
   required_people: 1,
   status: :published,
   published_at: Time.current - 3.days,
   expires_at: Time.current + 27.days
+  # notified_member_ids指定なし = グループ全員に表示
 )
 
-# 案件4: カーラッピング（公開中、応募なし）
+# 案件4: カーラッピング（公開中、応募なし）- craftsman1のみに表示
 Job.create!(
   client: client2,
   group: group2,
@@ -170,14 +176,16 @@ Job.create!(
   location: '神奈川県',
   address: '横浜市西区みなとみらい2-3-4',
   budget: 15_000,
-  scheduled_date: Date.today + 14.days,
+  start_date: Date.today + 14.days,
+  end_date: Date.today + 14.days,
   required_people: 1,
   status: :published,
   published_at: Time.current,
-  expires_at: Time.current + 30.days
+  expires_at: Time.current + 30.days,
+  notified_member_ids: [craftsman1.id]
 )
 
-# 案件5: その他（公開中）
+# 案件5: その他（公開中）- 全員に表示
 job5 = Job.create!(
   client: client1,
   group: group1,
@@ -187,14 +195,16 @@ job5 = Job.create!(
   location: '東京都',
   address: '渋谷区神南1-2-3',
   budget: 20_000,
-  scheduled_date: Date.today + 12.days,
+  start_date: Date.today + 12.days,
+  end_date: Date.today + 13.days,
   required_people: 2,
   status: :published,
   published_at: Time.current - 1.day,
   expires_at: Time.current + 29.days
+  # notified_member_ids指定なし = グループ全員に表示
 )
 
-# 案件6: フリート（大阪）
+# 案件6: フリート（大阪）- craftsman3のみに表示
 Job.create!(
   client: client1,
   group: group1,
@@ -204,11 +214,13 @@ Job.create!(
   location: '大阪府',
   address: '大阪市中央区本町3-4-5',
   budget: 30_000,
-  scheduled_date: Date.today + 20.days,
+  start_date: Date.today + 20.days,
+  end_date: Date.today + 24.days,
   required_people: 3,
   status: :published,
   published_at: Time.current - 4.days,
-  expires_at: Time.current + 26.days
+  expires_at: Time.current + 26.days,
+  notified_member_ids: [craftsman3.id]
 )
 
 puts "Jobs created: #{Job.count}"

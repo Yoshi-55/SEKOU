@@ -10,6 +10,11 @@
 
     const groupsData = JSON.parse(groupSelect.dataset.groups || '[]');
 
+    // 既存の notified_member_ids を取得（編集時用）
+    const existingNotifiedMemberIds = groupSelect.dataset.notifiedMemberIds
+      ? JSON.parse(groupSelect.dataset.notifiedMemberIds)
+      : [];
+
     function updateNotificationSettings() {
       const selectedGroupId = parseInt(groupSelect.value);
 
@@ -37,6 +42,15 @@
         checkbox.className = 'w-5 h-5 rounded border-gray-300 member-checkbox';
         checkbox.disabled = notifyAllCheckbox.checked;
 
+        // 既存の選択状態を復元（編集時）
+        // existingNotifiedMemberIds は文字列配列、member.id は整数なので、両方を文字列に変換して比較
+        const memberIdStr = String(member.id);
+        const existingIdsStr = existingNotifiedMemberIds.map(id => String(id));
+        const isSelected = existingIdsStr.includes(memberIdStr);
+        if (isSelected) {
+          checkbox.checked = true;
+        }
+
         const span = document.createElement('span');
         span.className = 'text-base';
         span.textContent = member.name;
@@ -52,6 +66,15 @@
           }
         });
       });
+
+      // notified_member_ids が空の場合は「全員に通知」をチェック
+      if (existingNotifiedMemberIds.length === 0 && selectedGroup.members.length > 0) {
+        notifyAllCheckbox.checked = true;
+        document.querySelectorAll('.member-checkbox').forEach(cb => {
+          cb.disabled = true;
+          cb.checked = false;
+        });
+      }
 
       notificationSettings.style.display = 'block';
     }

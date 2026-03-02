@@ -7,7 +7,7 @@
     <% elsif @apply.accepted? %>
       <span class="bg-green-500 text-white text-xs px-2 py-1 rounded-full font-medium">承認済み</span>
     <% elsif @apply.rejected? %>
-      <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full font-medium">不採用</span>
+      <span class="bg-gray-400 text-white text-xs px-2 py-1 rounded-full font-medium">見送り</span>
     <% elsif @apply.cancelled? %>
       <span class="bg-gray-400 text-white text-xs px-2 py-1 rounded-full font-medium">キャンセル</span>
     <% end %>
@@ -129,8 +129,8 @@
     <% elsif @apply.job.client == current_user %>
       <%= link_to "← 案件詳細に戻る", job_path(@apply.job), class: "text-blue-600 hover:underline text-sm" %>
       <% if @apply.pending? %>
-        <%= link_to "承認する", accept_apply_path(@apply), data: { turbo_method: :patch }, class: "bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium text-sm" %>
-        <%= link_to "不採用", reject_apply_path(@apply), data: { turbo_method: :patch, turbo_confirm: "本当に不採用としますか？" }, class: "bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium text-sm" %>
+        <%= link_to "承認", accept_apply_path(@apply), data: { turbo_method: :patch }, class: "bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium text-sm" %>
+        <%= link_to "見送り", reject_apply_path(@apply), data: { turbo_method: :patch, turbo_confirm: "今回は見送ってもよろしいですか？" }, class: "bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg font-medium text-sm" %>
       <% end %>
     <% end %>
   </div>

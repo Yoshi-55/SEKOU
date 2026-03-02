@@ -37,9 +37,7 @@ class JobsController < ApplicationController
             end
 
     # 通知対象メンバーのみに表示
-    if user_signed_in?
-      @jobs = @jobs.select { |job| job.visible_to?(current_user) }
-    end
+    @jobs = @jobs.select { |job| job.visible_to?(current_user) } if user_signed_in?
 
     # ページネーションは配列に対して実行
     @jobs = Kaminari.paginate_array(@jobs).page(params[:page]).per(20)

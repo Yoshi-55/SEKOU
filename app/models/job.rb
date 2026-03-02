@@ -52,9 +52,9 @@ class Job < ApplicationRecord
 
   JOB_TYPE_LABELS = {
     'car_wrapping' => 'カーラッピング施工',
-    'fleet'        => 'フリート施工',
-    'ppf'          => 'PPF施工',
-    'other'        => 'その他'
+    'fleet' => 'フリート施工',
+    'ppf' => 'PPF施工',
+    'other' => 'その他'
   }.freeze
 
   def job_type_label

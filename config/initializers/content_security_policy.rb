@@ -19,5 +19,5 @@ Rails.application.configure do
 
   # nonceをimportmap・インラインスクリプトに適用
   config.content_security_policy_nonce_generator = ->(request) { request.session.id.to_s }
-  config.content_security_policy_nonce_directives = %w(script-src)
+  config.content_security_policy_nonce_directives = %w[script-src]
 end

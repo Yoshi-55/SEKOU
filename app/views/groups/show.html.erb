@@ -75,6 +75,7 @@
             <% end %>
           </div>
           <div class="flex gap-3 text-xs text-gray-400">
+            <span>募集主: <%= job.client.name %></span>
             <span>📍 <%= job.location %></span>
             <span class="font-medium text-blue-600"><%= number_to_currency(job.budget, unit: "¥", precision: 0) %></span>
           </div>

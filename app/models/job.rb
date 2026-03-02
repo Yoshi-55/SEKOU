@@ -36,10 +36,13 @@ class Job < ApplicationRecord
   # Methods
   def publish!
     now = Time.current
+    # 応募締切は作業開始日の前日まで（ただし最大30日後）
+    max_expires_at = [now + 30.days, start_date.to_time.beginning_of_day].min
+
     update!(
       status: :published,
       published_at: now,
-      expires_at: now + 30.days
+      expires_at: max_expires_at
     )
   end
 

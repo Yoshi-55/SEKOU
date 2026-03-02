@@ -14,9 +14,14 @@
   </div>
 <% else %>
 <div class="max-w-4xl mx-auto">
-  <div class="mb-4">
-    <h1 class="text-3xl font-bold mb-2">案件一覧</h1>
-    <p class="text-gray-600">カーラッピング・フリート施工案件を探す</p>
+  <div class="mb-2">
+    <h1 class="text-3xl font-bold mb-1">案件一覧</h1>
+    <p class="text-sm text-gray-500 mb-2">所属グループ:</p>
+    <div class="flex flex-wrap gap-2 mb-3">
+      <% current_user.groups.each do |group| %>
+        <%= link_to group.name, group_path(group), class: "text-xs bg-blue-50 text-blue-700 border border-blue-200 px-3 py-1.5 rounded-full font-medium hover:bg-blue-100 transition-colors" %>
+      <% end %>
+    </div>
   </div>
 
   <!-- Filter and Sort Section -->

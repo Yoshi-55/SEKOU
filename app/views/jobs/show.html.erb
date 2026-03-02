@@ -19,6 +19,7 @@
           </div>
         <% end %>
         <p class="text-xs text-gray-400 mt-1">
+          募集主: <%= @job.client.name %> |
           掲載日: <%= l(@job.published_at, format: :short) if @job.published_at %>
           <% if @job.expires_at %>| 期限: <%= l(@job.expires_at, format: :short) %><% end %>
         </p>

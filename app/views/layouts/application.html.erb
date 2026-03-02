@@ -131,8 +131,12 @@
       <div class="h-16"></div>
     <% else %>
       <footer class="bg-gray-900 text-white mt-auto">
-        <div class="px-6 py-6 text-center text-gray-500 text-sm">
-          <p>&copy; 2026 施工募集. All rights reserved.</p>
+        <div class="px-6 py-6 text-center">
+          <div class="flex justify-center gap-4 mb-3">
+            <%= link_to "利用規約", terms_path, class: "text-gray-400 hover:text-white text-sm transition-colors" %>
+            <%= link_to "プライバシーポリシー", privacy_path, class: "text-gray-400 hover:text-white text-sm transition-colors" %>
+          </div>
+          <p class="text-gray-500 text-sm">&copy; 2026 施工募集. All rights reserved.</p>
         </div>
       </footer>
     <% end %>

@@ -9,9 +9,17 @@ class GroupsController < ApplicationController
     @groups = current_user.groups.includes(:owner, :members)
   end
 
+  def show
+    return if @group.members.include?(current_user)
+
+    redirect_to groups_path, alert: 'このグループにアクセスする権限がありません。'
+  end
+
   def new
     @group = current_user.owned_groups.build
   end
+
+  def edit; end
 
   def create
     @group = current_user.owned_groups.build(group_params)
@@ -19,23 +27,15 @@ class GroupsController < ApplicationController
     if @group.save
       redirect_to @group, notice: 'グループを作成しました。'
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
-
-  def show
-    return if @group.members.include?(current_user)
-
-    redirect_to groups_path, alert: 'このグループにアクセスする権限がありません。'
-  end
-
-  def edit; end
 
   def update
     if @group.update(group_params)
       redirect_to @group, notice: 'グループを更新しました。'
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

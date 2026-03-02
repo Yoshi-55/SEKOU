@@ -42,6 +42,6 @@ module App
     config.generators.system_tests = nil
 
     config.i18n.default_locale = :ja
-    config.i18n.load_path += Dir[Rails.root.join('config/locales/**/*.yml')]
+    config.i18n.load_path += Rails.root.glob('config/locales/**/*.yml')
   end
 end

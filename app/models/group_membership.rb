@@ -4,7 +4,7 @@ class GroupMembership < ApplicationRecord
   belongs_to :group
   belongs_to :user
 
-  enum role: {
+  enum :role, {
     member: 0,
     admin: 1
   }

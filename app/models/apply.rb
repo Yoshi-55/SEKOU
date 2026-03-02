@@ -6,7 +6,7 @@ class Apply < ApplicationRecord
   belongs_to :craftsman, class_name: 'User'
 
   # Enums
-  enum status: {
+  enum :status, {
     pending: 0,
     accepted: 1,
     rejected: 2,

@@ -11,7 +11,7 @@ class Job < ApplicationRecord
   has_many :craftsmen, through: :applies, source: :craftsman
 
   # Enums
-  enum status: {
+  enum :status, {
     pending_payment: 0,
     published: 1,
     closed: 2
@@ -27,7 +27,6 @@ class Job < ApplicationRecord
   validates :start_date, presence: true
   validate :end_date_must_be_after_start_date
   validates :required_people, presence: true, numericality: { greater_than: 0 }
-  validates :group_id, presence: true
 
   # Scopes
   scope :published_jobs, -> { where(status: :published).where('expires_at > ?', Time.current) }

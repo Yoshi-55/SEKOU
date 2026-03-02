@@ -30,7 +30,7 @@ class AppliesController < ApplicationController
     if @apply.save
       redirect_to applies_path, notice: '応募が完了しました。'
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 

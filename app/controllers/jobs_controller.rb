@@ -6,55 +6,21 @@ class JobsController < ApplicationController
   before_action :authorize_job_owner!, only: %i[edit update destroy]
 
   def index
-    @jobs = Job.published_jobs.recent
-
-    # グループによる表示制限（全案件がグループ限定）
-    if user_signed_in?
-      # ログインユーザーが所属するグループの案件のみ表示
-      group_ids = current_user.groups.pluck(:id)
-      @jobs = @jobs.where(group_id: group_ids) if group_ids.any?
-    else
-      # 未ログインユーザーは何も表示しない
-      @jobs = @jobs.none
-    end
-
-    # フィルタリング
-    @jobs = @jobs.where(job_type: params[:job_type]) if params[:job_type].present?
-    @jobs = @jobs.where(location: params[:location]) if params[:location].present?
-    @jobs = @jobs.where('budget >= ?', params[:min_budget]) if params[:min_budget].present?
-    @jobs = @jobs.where('budget <= ?', params[:max_budget]) if params[:max_budget].present?
-
-    # ソート
-    @jobs = case params[:sort]
-            when 'budget_desc'
-              @jobs.order(budget: :desc)
-            when 'budget_asc'
-              @jobs.order(budget: :asc)
-            when 'date'
-              @jobs.order(start_date: :asc)
-            else
-              @jobs.recent
-            end
-
-    # 通知対象メンバーのみに表示
-    @jobs = @jobs.select { |job| job.visible_to?(current_user) } if user_signed_in?
-
-    # ページネーションは配列に対して実行
+    @jobs = filter_jobs_by_group(Job.published_jobs.recent)
+    @jobs = apply_filters(@jobs)
+    @jobs = apply_sorting(@jobs)
+    @jobs = filter_by_visibility(@jobs)
     @jobs = Kaminari.paginate_array(@jobs).page(params[:page]).per(20)
   end
 
   def show
-    # 通知対象メンバーのみアクセス可能
     unless user_signed_in? && @job.visible_to?(current_user)
       redirect_to root_path, alert: 'この案件にアクセスする権限がありません。'
       return
     end
 
-    if user_signed_in? && @job.client == current_user
-      @applies = @job.applies.includes(:craftsman)
-    elsif user_signed_in?
-      @accepted = @job.applies.accepted.exists?(craftsman: current_user)
-    end
+    @applies = @job.applies.includes(:craftsman) if @job.client == current_user
+    @accepted = @job.applies.accepted.exists?(craftsman: current_user) unless @job.client == current_user
   end
 
   def posted
@@ -65,24 +31,23 @@ class JobsController < ApplicationController
     @job = current_user.jobs.build
   end
 
-  def create
-    @job = current_user.jobs.build(job_params)
-    @job.status = :published
-    @job.published_at = Time.current
-    @job.expires_at = Time.current + 30.days
-
-    if @job.save
-      redirect_to @job, notice: '案件を掲載しました。'
-
-    else
-      render :new, status: :unprocessable_entity
-    end
-  end
-
   def edit
     return unless @job.applies.accepted.exists?
 
     redirect_to @job, alert: '承認済みの応募がある案件は編集できません。'
+  end
+
+  def create
+    @job = current_user.jobs.build(job_params)
+    @job.status = :published
+    @job.published_at = Time.current
+    @job.expires_at = 30.days.from_now
+
+    if @job.save
+      redirect_to @job, notice: '案件を掲載しました。'
+    else
+      render :new, status: :unprocessable_content
+    end
   end
 
   def update
@@ -91,7 +56,7 @@ class JobsController < ApplicationController
     elsif @job.update(job_params)
       redirect_to @job, notice: '案件を更新しました。'
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 
@@ -122,5 +87,39 @@ class JobsController < ApplicationController
     return if @job.client == current_user
 
     redirect_to root_path, alert: 'アクセス権限がありません。'
+  end
+
+  def filter_jobs_by_group(jobs)
+    return jobs.none unless user_signed_in?
+
+    group_ids = current_user.groups.pluck(:id)
+    group_ids.any? ? jobs.where(group_id: group_ids) : jobs.none
+  end
+
+  def apply_filters(jobs)
+    jobs = jobs.where(job_type: params[:job_type]) if params[:job_type].present?
+    jobs = jobs.where(location: params[:location]) if params[:location].present?
+    jobs = jobs.where(budget: (params[:min_budget])..) if params[:min_budget].present?
+    jobs = jobs.where(budget: ..(params[:max_budget])) if params[:max_budget].present?
+    jobs
+  end
+
+  def apply_sorting(jobs)
+    case params[:sort]
+    when 'budget_desc'
+      jobs.order(budget: :desc)
+    when 'budget_asc'
+      jobs.order(budget: :asc)
+    when 'date'
+      jobs.order(start_date: :asc)
+    else
+      jobs.recent
+    end
+  end
+
+  def filter_by_visibility(jobs)
+    return jobs unless user_signed_in?
+
+    jobs.select { |job| job.visible_to?(current_user) }
   end
 end

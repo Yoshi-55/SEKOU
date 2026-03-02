@@ -1,0 +1,55 @@
+AllCops:
+  NewCops: enable
+  Exclude:
+    - 'bin/**/*'
+    - 'node_modules/**/*'
+    - 'vendor/**/*'
+    - 'db/schema.rb'
+    - 'db/migrate/**/*'
+
+plugins:
+  - rubocop-rails
+  - rubocop-rspec
+
+Rails:
+  Enabled: true
+
+# ドキュメントコメントは不要
+Style/Documentation:
+  Enabled: false
+
+# メトリクス系は緩和
+Metrics/AbcSize:
+  Max: 25
+
+Metrics/MethodLength:
+  Max: 15
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+Metrics/PerceivedComplexity:
+  Max: 10
+
+Metrics/BlockLength:
+  Enabled: false
+
+# 行の長さ
+Layout/LineLength:
+  Max: 120
+  Exclude:
+    - 'config/initializers/**/*'
+
+# 変数名の数字は許可
+Naming/VariableNumber:
+  Enabled: false
+
+# Rails特有の警告を無効化
+Rails/I18nLocaleTexts:
+  Enabled: false
+
+Rails/InverseOf:
+  Enabled: false
+
+Rails/Exit:
+  Enabled: false

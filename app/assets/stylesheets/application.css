@@ -60,3 +60,20 @@ input[type="checkbox"]:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+/* iOS font size optimization */
+body {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+@media (max-width: 767px) {
+  body { font-size: 16px; }
+  input, select, textarea, button { font-size: 16px !important; }
+
+  /* 見出しサイズを縮小 */
+  h1, .text-3xl { font-size: 1.5rem !important; line-height: 2rem !important; }
+  h2, .text-2xl { font-size: 1.25rem !important; line-height: 1.75rem !important; }
+  .text-xl { font-size: 1.125rem !important; line-height: 1.75rem !important; }
+  .text-lg { font-size: 1rem !important; line-height: 1.5rem !important; }
+}
